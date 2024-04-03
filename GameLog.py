@@ -25,14 +25,12 @@ class GameLog:
         self.log.write(f'Mission Options: {mission}\n')
         self.log.write(f'Selected Mission: {selected_mission}\n')
 
-    def log_assignments(self, votes, assignments):
-        # for v in votes:
-        #     self.log.write(f'vote: {v}\n')
-        self.log.write(f'Assignments: {assignments}\n')
+    def log_mission_loss(self, selected_mission, points):
+        self.log.write(f'Mission will lose the team {points} from {selected_mission}\n')
 
     def log_challenges(self, name, participants):
         if len(participants) > 0:
-            self.log.write(f'In {name}...\n')
+            self.log.write(f'In {name}\n')
             self.log.write(f'\tPlayers {participants}\n')
 
     def log_actions(self, actions, challenge):
@@ -47,3 +45,12 @@ class GameLog:
                     self.log.write(f'\t{challenge}: SABOTEUR chooses to SABOTAGE\n')
                 else:
                     self.log.write(f'\t{challenge}: SABOTEUR chooses NOT to SABOTAGE\n')
+
+    def log_challenge_outcomes(self, name, succeeded):
+        if succeeded:
+            self.log.write(f'\tThe {name} team was SUCCESSFUL!\n')
+        else:
+            self.log.write(f'\tThe {name} team was NOT SUCCESSFUL.\n')
+
+    def score_log(self, name, this_score, new_score):
+        self.log.write(f'\tTeam scored {this_score} points for room.\n')
