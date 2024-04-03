@@ -1,0 +1,76 @@
+...INTRODUCING...
+Player 1
+	NAV Skill: 0.01
+	ENG Skill: 0.73
+	SCI Skill: 0.01
+	DEF Skill: 0.92
+Player 2
+	NAV Skill: 0.49
+	ENG Skill: 0.06
+	SCI Skill: 0.97
+	DEF Skill: 0.1
+Player 3: THE SABOTEUR
+	NAV Skill: 0.26
+	ENG Skill: 0.99
+	SCI Skill: 0.25
+	DEF Skill: 0.03
+Player 4
+	NAV Skill: 0.97
+	ENG Skill: 0.18
+	SCI Skill: 0.32
+	DEF Skill: 0.04
+Player 5
+	NAV Skill: 0.93
+	ENG Skill: 0.89
+	SCI Skill: 0.67
+	DEF Skill: 0.9
+
+---ROUND 1---
+SCORE: {'NAV': 6, 'ENG': 6, 'SCI': 6, 'DEF': 6}
+Mission Options: ['ENG', 'NAV']
+Selected Mission: NAV
+vote: {'NAV': [2, 3], 'ENG': [2, 3], 'SCI': [2], 'DEF': []}
+vote: {'NAV': [1, 3], 'ENG': [1, 3], 'SCI': [1], 'DEF': []}
+vote: {'NAV': [5, 4], 'ENG': [5, 4], 'SCI': [5], 'DEF': []}
+vote: {'NAV': [1, 2], 'ENG': [1, 2], 'SCI': [1], 'DEF': []}
+vote: {'NAV': [1, 2], 'ENG': [1, 2], 'SCI': [1], 'DEF': []}
+
+---ROUND 2---
+SCORE: {'NAV': 3, 'ENG': 6, 'SCI': 6, 'DEF': 6}
+Mission Options: ['DEF', 'ENG']
+Selected Mission: ENG
+vote: {'NAV': [2, 3], 'ENG': [2, 3], 'SCI': [2], 'DEF': []}
+vote: {'NAV': [1, 3], 'ENG': [1, 3], 'SCI': [1], 'DEF': []}
+vote: {'NAV': [5, 4], 'ENG': [5, 4], 'SCI': [5], 'DEF': []}
+vote: {'NAV': [1, 2], 'ENG': [1, 2], 'SCI': [1], 'DEF': []}
+vote: {'NAV': [1, 2], 'ENG': [1, 2], 'SCI': [1], 'DEF': []}
+
+---ROUND 3---
+SCORE: {'NAV': 3, 'ENG': 6, 'SCI': 6, 'DEF': 6}
+Mission Options: ['ENG', 'SCI']
+Selected Mission: SCI
+vote: {'NAV': [2, 3], 'ENG': [2], 'SCI': [2, 3], 'DEF': []}
+vote: {'NAV': [1, 3], 'ENG': [1], 'SCI': [1, 3], 'DEF': []}
+vote: {'NAV': [5, 4], 'ENG': [5], 'SCI': [5, 4], 'DEF': []}
+vote: {'NAV': [1, 2], 'ENG': [1], 'SCI': [1, 2], 'DEF': []}
+vote: {'NAV': [1, 2], 'ENG': [1], 'SCI': [1, 2], 'DEF': []}
+
+---ROUND 4---
+SCORE: {'NAV': 3, 'ENG': 6, 'SCI': 5, 'DEF': 6}
+Mission Options: ['SCI', 'NAV']
+Selected Mission: SCI
+vote: {'NAV': [2, 3], 'ENG': [2], 'SCI': [2, 3], 'DEF': []}
+vote: {'NAV': [1, 3], 'ENG': [1], 'SCI': [1, 3], 'DEF': []}
+vote: {'NAV': [5, 4], 'ENG': [5], 'SCI': [5, 4], 'DEF': []}
+vote: {'NAV': [1, 2], 'ENG': [1], 'SCI': [1, 2], 'DEF': []}
+vote: {'NAV': [1, 2], 'ENG': [1], 'SCI': [1, 2], 'DEF': []}
+
+---ROUND 5---
+SCORE: {'NAV': 3, 'ENG': 6, 'SCI': 5, 'DEF': 6}
+Mission Options: ['ENG', 'DEF']
+Selected Mission: ENG
+vote: {'NAV': [2, 3], 'ENG': [2, 3], 'SCI': [2], 'DEF': []}
+vote: {'NAV': [1, 3], 'ENG': [1, 3], 'SCI': [1], 'DEF': []}
+vote: {'NAV': [5, 4], 'ENG': [5, 4], 'SCI': [5], 'DEF': []}
+vote: {'NAV': [1, 2], 'ENG': [1, 2], 'SCI': [1], 'DEF': []}
+vote: {'NAV': [1, 2], 'ENG': [1, 2], 'SCI': [1], 'DEF': []}
