@@ -54,3 +54,6 @@ class GameLog:
 
     def score_log(self, name, this_score, new_score):
         self.log.write(f'\tTeam scored {this_score} points for room.\n')
+
+    def trust_update_log(self):
+        self.log.write(f'Player relationships updated\n')

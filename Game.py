@@ -48,9 +48,9 @@ class Game:
         # Run for five rounds
         self.round(1)
         self.round(2)
-        # self.round(3)
-        # self.round(4)
-        # self.round(5)
+        self.round(3)
+        self.round(4)
+        self.round(5)
 
     def round(self, round_num):
         # Logging for top of the round
@@ -81,6 +81,7 @@ class Game:
             assignments[id] = most_votes
         
         # Set up Challenges
+        round_score = {}
         for challenge in self.challenges:
             participants = []
             participant_ids = []
@@ -102,16 +103,19 @@ class Game:
                 # Calculate Score
                 if success:
                     # num players * flip sign if sabotaged + flip however many individual votes again
-                    print(f'for {challenge.name},'
-                          f'num players ({len(participants)})'
-                          f' * sabotage ({-1* sabotaged})'
-                          f' + (opposite of sabotage ({-1* (not sabotaged)})'
-                          f' * flips ({flips}))')
                     score = len(participants) * (-1 * sabotaged) + (-1 * (not sabotaged) * flips)
                 else:
                     score = 0
+                # remember the change in challenge score for this round
+                round_score[challenge.name] = score
+                # update the global scores
                 self.score[challenge.name] = self.score[challenge.name]+score
                 if self.detail_log: self.gamelog.score_log(challenge.name, score, self.score[challenge.name])
+
+        # Calculate new trust scores
+        for player in self.players:
+            player.update_trust(round_score, assignments)
+        if self.detail_log: self.gamelog.trust_update_log()
 
 
 if __name__ == '__main__':

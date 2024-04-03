@@ -9,13 +9,13 @@ class Player:
         self.all_ids = all_ids
         self.saboteur = saboteur
         # random numbers between 0 and 1 to represent this player's skills and personality
-        self.trust = random.random()
+        self.trust = round(random.random(), 2)
         self.trust_threshold = 0.25
-        self.intelligence = random.random()
-        self.nav_skill = round(random.random(),2)
-        self.eng_skill = round(random.random(),2)
-        self.sci_skill = round(random.random(),2)
-        self.def_skill = round(random.random(),2)
+        self.intelligence = round(random.random(), 2)
+        self.nav_skill = round(random.random(), 2)
+        self.eng_skill = round(random.random(), 2)
+        self.sci_skill = round(random.random(), 2)
+        self.def_skill = round(random.random(), 2)
         self.skill_map = {"NAV": self.nav_skill,
                           "ENG": self.eng_skill,
                           "SCI": self.sci_skill,
@@ -24,10 +24,8 @@ class Player:
         # assumes we start by trusting everyone equally, except ourselves
         starting_trust_array = np.full(shape=len(self.all_ids), fill_value=self.trust)
         self.relationships = dict(zip(self.all_ids, starting_trust_array))
-        if self.saboteur:
-            self.relationships[self.id] = 0
-        else:
-            self.relationships[self.id] = 1
+        # we always trust ourselves (right?)
+        self.relationships[self.id] = 1
 
     '''player returns the mission they vote for. Takes in mission [string, string] and score
     {NAV:int score, ENG: int score, SCI: int score, DEF: int score}'''
@@ -102,6 +100,17 @@ class Player:
         skill = self.skill_map[challenge]
         return random.choices([True, False], weights=[skill, 1-skill], k=1)
 
-    def update_trust(self, score):
-        return True
-
+    '''Simulates the player re-evaluating their trust of others based on how each room did this round. Takes in
+    score {NAV:int score, ENG: int score, SCI: int score, DEF: int score} (where score is what happened this round,
+    not global score) and assignments {player_id: challenge, player_id: challenge ... player_id: challenge'''
+    def update_trust(self, score, assignments):
+        for player_id, challenge in assignments.items():
+            # we continue to trust ourselves
+            if player_id == self.id:
+                trust_update = 0
+            else:
+                if score[challenge] == 0:
+                    trust_update = 0
+                else:
+                    trust_update = self.relationships[player_id]/score[challenge]
+            self.relationships[player_id] = self.relationships[player_id] + trust_update
