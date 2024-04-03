@@ -45,10 +45,10 @@ class Game:
 
         # Run for five rounds
         self.round(1)
-        self.round(2)
-        self.round(3)
-        self.round(4)
-        self.round(5)
+        # self.round(2)
+        # self.round(3)
+        # self.round(4)
+        # self.round(5)
 
     def round(self, round_num):
         # Logging for top of the round
@@ -65,13 +65,20 @@ class Game:
 
         # Determine Room Assignments
         room_votes = [player.vote_for_assignments(selected_mission, self.score) for player in self.players]
-        if self.detail_log: self.gamelog.log_assignments(room_votes)
+        assignments = {}
         for id in self.player_ids:
-            total_votes = {"NAV": 0,
-                           "ENG": 0,
-                           "SCI": 0,
-                           "DEF": 0}
-        
+            print(f'Proccessing Votes for {id}')
+            total_votes = {"NAV": 0, "ENG": 0, "SCI": 0, "DEF": 0}
+            for vote in room_votes:
+                if id in vote["NAV"]: total_votes["NAV"] = total_votes["NAV"] + 1
+                if id in vote["ENG"]: total_votes["ENG"] = total_votes["ENG"] + 1
+                if id in vote["SCI"]: total_votes["SCI"] = total_votes["SCI"] + 1
+                if id in vote["DEF"]: total_votes["DEF"] = total_votes["DEF"] + 1
+            print(f'\tTotal Votes: {total_votes}')
+            most_votes = max(total_votes, key=lambda challenge: total_votes[challenge])
+            assignments[id] = most_votes
+        if self.detail_log: self.gamelog.log_assignments(room_votes, assignments)
+
 
 
 if __name__ == '__main__':

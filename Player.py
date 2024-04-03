@@ -65,12 +65,13 @@ class Player:
         # starting with the lowest scoring room, add people
         while num_to_assign > 0:
             # runs assignment function
-            challenge, assigned = self.assigning(considered_score, num_to_assign)
-            assignments[challenge] = sorted_trust[0:assigned]
+            challenge, num_assigned = self.assigning(considered_score, num_to_assign)
+            assignments[challenge] = sorted_trust[0:num_assigned]
             # updates list of remaining challenges, scores, and people left to consider
             considered_score.pop(challenge)
-            sorted_trust.pop(assigned)
-            num_to_assign = num_to_assign-assigned
+            for i in assignments[challenge]:
+                sorted_trust.remove(i)
+            num_to_assign = num_to_assign-num_assigned
         return assignments
 
     def assigning(self, considered_score, num_to_assign):

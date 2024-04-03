@@ -25,7 +25,8 @@ class GameLog:
         self.log.write(f'Mission Options: {mission}\n')
         self.log.write(f'Selected Mission: {selected_mission}\n')
 
-    def log_assignments(self, votes):
+    def log_assignments(self, votes, assignments):
         for v in votes:
             self.log.write(f'vote: {v}\n')
+        self.log.write(f'Assignments: {assignments}')
 
