@@ -1,37 +1,41 @@
 ...INTRODUCING...
 Player 1
-	NAV Skill: 0.23
-	ENG Skill: 0.93
-	SCI Skill: 0.99
-	DEF Skill: 0.05
+	NAV Skill: 0.78
+	ENG Skill: 0.11
+	SCI Skill: 0.52
+	DEF Skill: 0.67
 Player 2
-	NAV Skill: 0.84
-	ENG Skill: 0.19
-	SCI Skill: 0.33
-	DEF Skill: 0.7
-Player 3: THE SABOTEUR
-	NAV Skill: 0.87
-	ENG Skill: 0.61
-	SCI Skill: 0.49
-	DEF Skill: 0.6
-Player 4
-	NAV Skill: 0.22
-	ENG Skill: 0.63
-	SCI Skill: 0.29
-	DEF Skill: 0.21
+	NAV Skill: 0.89
+	ENG Skill: 0.35
+	SCI Skill: 0.89
+	DEF Skill: 0.78
+Player 3
+	NAV Skill: 0.0
+	ENG Skill: 0.3
+	SCI Skill: 0.79
+	DEF Skill: 0.81
+Player 4: THE SABOTEUR
+	NAV Skill: 0.64
+	ENG Skill: 0.51
+	SCI Skill: 0.89
+	DEF Skill: 0.42
 Player 5
-	NAV Skill: 0.18
-	ENG Skill: 0.32
-	SCI Skill: 0.98
-	DEF Skill: 0.24
+	NAV Skill: 0.93
+	ENG Skill: 0.16
+	SCI Skill: 0.4
+	DEF Skill: 0.0
 
 ---ROUND 1---
 SCORE: {'NAV': 6, 'ENG': 6, 'SCI': 6, 'DEF': 6}
-Mission Options: ['ENG', 'ENG']
-Selected Mission: ENG
-vote: {'NAV': [4, 5], 'ENG': [2, 3], 'SCI': [1], 'DEF': []}
-vote: {'NAV': [4, 5], 'ENG': [1, 3], 'SCI': [2], 'DEF': []}
-vote: {'NAV': [2, 1], 'ENG': [5, 4], 'SCI': [3], 'DEF': []}
-vote: {'NAV': [3, 5], 'ENG': [1, 2], 'SCI': [4], 'DEF': []}
-vote: {'NAV': [3, 4], 'ENG': [1, 2], 'SCI': [5], 'DEF': []}
-Assignments: {1: 'ENG', 2: 'ENG', 3: 'NAV', 4: 'NAV', 5: 'NAV'}
+Mission Options: ['DEF', 'NAV']
+Selected Mission: NAV
+Assignments: {1: 'NAV', 2: 'NAV', 3: 'NAV', 4: 'ENG', 5: 'ENG'}
+In NAV...
+	Players [1, 2, 3]
+	NAV: Player 1 chooses not to FLIP
+	NAV: Player 2 chooses not to FLIP
+	NAV: Player 3 chooses not to FLIP
+In ENG...
+	Players [4, 5]
+	ENG: SABOTEUR chooses to SABOTAGE
+	ENG: Player 5 chooses to FLIP

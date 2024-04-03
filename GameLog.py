@@ -26,7 +26,24 @@ class GameLog:
         self.log.write(f'Selected Mission: {selected_mission}\n')
 
     def log_assignments(self, votes, assignments):
-        for v in votes:
-            self.log.write(f'vote: {v}\n')
-        self.log.write(f'Assignments: {assignments}')
+        # for v in votes:
+        #     self.log.write(f'vote: {v}\n')
+        self.log.write(f'Assignments: {assignments}\n')
 
+    def log_challenges(self, name, participants):
+        if len(participants) > 0:
+            self.log.write(f'In {name}...\n')
+            self.log.write(f'\tPlayers {participants}\n')
+
+    def log_actions(self, actions, challenge):
+        for player, flip in actions.items():
+            if not player.saboteur:
+                if flip:
+                    self.log.write(f'\t{challenge}: Player {player.id} chooses to FLIP\n')
+                else:
+                    self.log.write(f'\t{challenge}: Player {player.id} chooses not to FLIP\n')
+            else:
+                if flip:
+                    self.log.write(f'\t{challenge}: SABOTEUR chooses to SABOTAGE\n')
+                else:
+                    self.log.write(f'\t{challenge}: SABOTEUR chooses NOT to SABOTAGE\n')

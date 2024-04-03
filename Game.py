@@ -16,11 +16,12 @@ class Game:
         self.detail_log = True
 
         # Create the Challenges
-        self.challenges = ["NAV", "ENG", "SCI", "DEF"]
-        self.nav_room = Challenge.Challenge()
-        self.eng_room = Challenge.Challenge()
-        self.sci_room = Challenge.Challenge()
-        self.def_room = Challenge.Challenge()
+        self.challenge_names = ["NAV", "ENG", "SCI", "DEF"]
+        self.nav_room = Challenge.Challenge("NAV")
+        self.eng_room = Challenge.Challenge("ENG")
+        self.sci_room = Challenge.Challenge("SCI")
+        self.def_room = Challenge.Challenge("DEF")
+        self.challenges = [self.nav_room, self.eng_room, self.sci_room, self.def_room]
 
         # Create the Players
         self.player_ids = list(range(1, num_players))
@@ -31,6 +32,7 @@ class Game:
                 self.players.append(Player.Player(id_num, True, self.player_ids))
             else:
                 self.players.append(Player.Player(id_num, False, self.player_ids))
+        self.player_map = dict(zip(self.player_ids, self.players))
         self.gamelog.log_players(self.players)
 
         # Store game state info
@@ -55,7 +57,7 @@ class Game:
         if self.detail_log: self.gamelog.log_round(round_num, self.score)
 
         # Select a Mission
-        mission = random.choices(self.challenges, k=2)
+        mission = random.choices(self.challenge_names, k=2)
         mission_votes = [player.vote_for_mission(mission, self.score)[0] for player in self.players]
         selected_mission = max(Counter(mission_votes))
         if self.detail_log: self.gamelog.log_mission(mission, selected_mission)
@@ -67,17 +69,37 @@ class Game:
         room_votes = [player.vote_for_assignments(selected_mission, self.score) for player in self.players]
         assignments = {}
         for id in self.player_ids:
-            print(f'Proccessing Votes for {id}')
             total_votes = {"NAV": 0, "ENG": 0, "SCI": 0, "DEF": 0}
             for vote in room_votes:
                 if id in vote["NAV"]: total_votes["NAV"] = total_votes["NAV"] + 1
                 if id in vote["ENG"]: total_votes["ENG"] = total_votes["ENG"] + 1
                 if id in vote["SCI"]: total_votes["SCI"] = total_votes["SCI"] + 1
                 if id in vote["DEF"]: total_votes["DEF"] = total_votes["DEF"] + 1
-            print(f'\tTotal Votes: {total_votes}')
             most_votes = max(total_votes, key=lambda challenge: total_votes[challenge])
             assignments[id] = most_votes
         if self.detail_log: self.gamelog.log_assignments(room_votes, assignments)
+        
+        # Check in for Challenges
+        # Assignments format: {1: 'NAV', 2: 'NAV', 3: 'NAV', 4: 'ENG', 5: 'ENG'}
+        for challenge in self.challenges:
+            participants = []
+            participant_ids = []
+            # get all the participants in this room
+            for id, chal in assignments.items():
+                if chal == challenge.name:
+                    participants.append(self.player_map[id])
+                    participant_ids.append(id)
+            if self.detail_log: self.gamelog.log_challenges(challenge.name, participant_ids)
+
+            actions = challenge.check_in_all_players(participants)
+            if self.detail_log: self.gamelog.log_actions(actions, challenge.name)
+
+            # completed_successfully = self.complete_challenge_for_all_players()
+            # if completed_successfully:
+            #     # num players * flip sign if sabotaged + flip however many individual votes again
+            #     score = len(self.players) * (-1 * self.sabotaged) + (
+            #                 -1 * (not self.sabotaged) * sum(self.flips.values()))
+
 
 
 

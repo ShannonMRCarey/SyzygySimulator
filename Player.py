@@ -90,8 +90,8 @@ class Player:
             # TODO: more complicated logic here
             return True
         else:
-            for player_id in challenge_participants:
-                if self.relationships[player_id] < self.trust_threshold:
+            for player in challenge_participants:
+                if self.relationships[player.id] < self.trust_threshold:
                     return True
                 else:
                     return False
