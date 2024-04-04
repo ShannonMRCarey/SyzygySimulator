@@ -57,7 +57,8 @@ class Player:
         # Get the IDs of everyone you trust in order (if saboteur, prioritize other sketchy-looking people)
         sorted_trust = sorted(self.relationships.items(), key=lambda item: item[1])
         sorted_trust = [id for (id, trust) in sorted_trust]
-        if self.saboteur:
+        # Good guys want the person they trust most first in the list
+        if not self.saboteur:
             sorted_trust.reverse()
 
         # starting with the lowest scoring room, add people
@@ -114,3 +115,4 @@ class Player:
                 else:
                     trust_update = self.relationships[player_id]/score[challenge]
             self.relationships[player_id] = self.relationships[player_id] + trust_update
+        return self.relationships.values()

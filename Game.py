@@ -3,6 +3,7 @@ from collections import Counter
 import Challenge
 import Player
 import GameLog
+import pandas as pd
 
 class Game:
     def __init__(self, num_players, num_saboteurs):
@@ -102,20 +103,27 @@ class Game:
 
                 # Calculate Score
                 if success:
-                    # num players * flip sign if sabotaged + flip however many individual votes again
-                    score = len(participants) * (-1 * sabotaged) + (-1 * (not sabotaged) * flips)
+                    if sabotaged:
+                        score = - len(participants) + flips
+                    else:
+                        score = len(participants) - flips
                 else:
                     score = 0
                 # remember the change in challenge score for this round
                 round_score[challenge.name] = score
                 # update the global scores
-                self.score[challenge.name] = self.score[challenge.name]+score
+                self.score[challenge.name] = self.score[challenge.name]+ score
                 if self.detail_log: self.gamelog.score_log(challenge.name, score, self.score[challenge.name])
 
         # Calculate new trust scores
+        relationships = []
         for player in self.players:
-            player.update_trust(round_score, assignments)
-        if self.detail_log: self.gamelog.trust_update_log()
+            relationships.append(player.update_trust(round_score, assignments))
+        relationships_df = pd.DataFrame(relationships, self.player_ids)
+        if self.detail_log: self.gamelog.trust_update_log(relationships_df)
+
+        # Log conclusion
+        self.gamelog.conclusion_log(self.score)
 
 
 if __name__ == '__main__':

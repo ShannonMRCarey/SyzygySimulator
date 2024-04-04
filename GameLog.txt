@@ -1,156 +1,186 @@
 ...INTRODUCING...
-Player 0
-	NAV Skill: 0.06
-	ENG Skill: 0.13
-	SCI Skill: 0.14
-	DEF Skill: 0.59
+Player 0: THE SABOTEUR
+	NAV Skill: 0.01
+	ENG Skill: 0.27
+	SCI Skill: 0.65
+	DEF Skill: 0.05
 Player 1
-	NAV Skill: 0.71
-	ENG Skill: 0.69
-	SCI Skill: 0.7
-	DEF Skill: 0.4
+	NAV Skill: 0.89
+	ENG Skill: 0.82
+	SCI Skill: 0.74
+	DEF Skill: 0.16
 Player 2
 	NAV Skill: 0.18
-	ENG Skill: 0.19
-	SCI Skill: 0.77
-	DEF Skill: 0.51
+	ENG Skill: 0.69
+	SCI Skill: 0.35
+	DEF Skill: 0.66
 Player 3
-	NAV Skill: 0.22
-	ENG Skill: 0.51
-	SCI Skill: 0.97
-	DEF Skill: 0.7
-Player 4: THE SABOTEUR
-	NAV Skill: 0.29
-	ENG Skill: 0.58
-	SCI Skill: 0.56
-	DEF Skill: 0.91
+	NAV Skill: 0.38
+	ENG Skill: 0.17
+	SCI Skill: 0.43
+	DEF Skill: 0.26
+Player 4
+	NAV Skill: 0.52
+	ENG Skill: 0.18
+	SCI Skill: 0.03
+	DEF Skill: 0.55
 Player 5
-	NAV Skill: 0.14
-	ENG Skill: 0.25
-	SCI Skill: 0.94
-	DEF Skill: 0.47
+	NAV Skill: 0.46
+	ENG Skill: 0.74
+	SCI Skill: 0.41
+	DEF Skill: 0.03
 
 ---ROUND 1---
 SCORE: {'NAV': 6, 'ENG': 6, 'SCI': 6, 'DEF': 6}
-Mission Options: ['SCI', 'NAV']
-Selected Mission: SCI
-Mission will lose the team 3 from SCI
+Mission Options: ['ENG', 'ENG']
+Selected Mission: ENG
+Mission will lose the team 0 from ENG
 In NAV
 	Players [2, 3, 4]
 	NAV: Player 2 chooses not to FLIP
 	NAV: Player 3 chooses not to FLIP
-	NAV: SABOTEUR chooses to SABOTAGE
-	The NAV team was NOT SUCCESSFUL.
-	Team scored 0 points for room.
-In ENG
-	Players [5]
-	ENG: Player 5 chooses not to FLIP
-	The ENG team was NOT SUCCESSFUL.
-	Team scored 0 points for room.
-In SCI
-	Players [0, 1]
-	SCI: Player 0 chooses not to FLIP
-	SCI: Player 1 chooses not to FLIP
-	The SCI team was SUCCESSFUL!
-	Team scored 0 points for room.
-Player relationships updated
-
----ROUND 2---
-SCORE: {'NAV': 6, 'ENG': 6, 'SCI': 3, 'DEF': 6}
-Mission Options: ['SCI', 'SCI']
-Selected Mission: SCI
-Mission will lose the team 2 from SCI
-In NAV
-	Players [2, 3, 4]
-	NAV: Player 2 chooses not to FLIP
-	NAV: Player 3 chooses not to FLIP
-	NAV: SABOTEUR chooses to SABOTAGE
-	The NAV team was SUCCESSFUL!
-	Team scored -3 points for room.
-In ENG
-	Players [5]
-	ENG: Player 5 chooses not to FLIP
-	The ENG team was NOT SUCCESSFUL.
-	Team scored 0 points for room.
-In SCI
-	Players [0, 1]
-	SCI: Player 0 chooses not to FLIP
-	SCI: Player 1 chooses not to FLIP
-	The SCI team was SUCCESSFUL!
-	Team scored 0 points for room.
-Player relationships updated
-
----ROUND 3---
-SCORE: {'NAV': 3, 'ENG': 6, 'SCI': 1, 'DEF': 6}
-Mission Options: ['SCI', 'DEF']
-Selected Mission: SCI
-Mission will lose the team 3 from SCI
-In NAV
-	Players [0, 1, 4]
-	NAV: Player 0 chooses not to FLIP
-	NAV: Player 1 chooses not to FLIP
-	NAV: SABOTEUR chooses to SABOTAGE
-	The NAV team was NOT SUCCESSFUL.
-	Team scored 0 points for room.
+	NAV: Player 4 chooses to FLIP
+	The NAV team was NOT SUCCESSFUL
+	Team scored 0 points for room
 In ENG
 	Players [5]
 	ENG: Player 5 chooses not to FLIP
 	The ENG team was SUCCESSFUL!
-	Team scored 0 points for room.
+	Team scored 1 points for room
 In SCI
-	Players [2, 3]
-	SCI: Player 2 chooses not to FLIP
-	SCI: Player 3 chooses not to FLIP
+	Players [1]
+	SCI: Player 1 chooses not to FLIP
 	The SCI team was SUCCESSFUL!
-	Team scored 0 points for room.
+	Team scored 1 points for room
+In DEF
+	Players [0]
+	DEF: SABOTEUR chooses to SABOTAGE
+	The DEF team was NOT SUCCESSFUL
+	Team scored 0 points for room
 Player relationships updated
+Final Score: {'NAV': 6, 'ENG': 7, 'SCI': 7, 'DEF': 6}
+The TEAM Wins! The Saboteur was unsuccessful.
 
----ROUND 4---
-SCORE: {'NAV': 3, 'ENG': 6, 'SCI': -2, 'DEF': 6}
-Mission Options: ['NAV', 'NAV']
+---ROUND 2---
+SCORE: {'NAV': 6, 'ENG': 7, 'SCI': 7, 'DEF': 6}
+Mission Options: ['NAV', 'ENG']
 Selected Mission: NAV
 Mission will lose the team 0 from NAV
 In NAV
-	Players [0, 1, 4]
-	NAV: Player 0 chooses not to FLIP
+	Players [1, 5]
 	NAV: Player 1 chooses not to FLIP
-	NAV: SABOTEUR chooses to SABOTAGE
+	NAV: Player 5 chooses not to FLIP
 	The NAV team was SUCCESSFUL!
-	Team scored -3 points for room.
+	Team scored 2 points for room
 In ENG
-	Players [5]
+	Players [2]
+	ENG: Player 2 chooses not to FLIP
+	The ENG team was SUCCESSFUL!
+	Team scored 1 points for room
+In SCI
+	Players [0]
+	SCI: SABOTEUR chooses to SABOTAGE
+	The SCI team was NOT SUCCESSFUL
+	Team scored 0 points for room
+In DEF
+	Players [3, 4]
+	DEF: Player 3 chooses not to FLIP
+	DEF: Player 4 chooses to FLIP
+	The DEF team was NOT SUCCESSFUL
+	Team scored 0 points for room
+Player relationships updated
+Final Score: {'NAV': 8, 'ENG': 8, 'SCI': 7, 'DEF': 6}
+The TEAM Wins! The Saboteur was unsuccessful.
+
+---ROUND 3---
+SCORE: {'NAV': 8, 'ENG': 8, 'SCI': 7, 'DEF': 6}
+Mission Options: ['ENG', 'ENG']
+Selected Mission: ENG
+Mission will lose the team 2 from ENG
+In NAV
+	Players [0]
+	NAV: SABOTEUR chooses to SABOTAGE
+	The NAV team was NOT SUCCESSFUL
+	Team scored 0 points for room
+In ENG
+	Players [1, 5]
+	ENG: Player 1 chooses not to FLIP
 	ENG: Player 5 chooses not to FLIP
 	The ENG team was SUCCESSFUL!
-	Team scored 0 points for room.
+	Team scored 2 points for room
 In SCI
-	Players [2, 3]
-	SCI: Player 2 chooses not to FLIP
+	Players [3]
 	SCI: Player 3 chooses not to FLIP
 	The SCI team was SUCCESSFUL!
-	Team scored 0 points for room.
+	Team scored 1 points for room
+In DEF
+	Players [2, 4]
+	DEF: Player 2 chooses not to FLIP
+	DEF: Player 4 chooses to FLIP
+	The DEF team was SUCCESSFUL!
+	Team scored 1 points for room
 Player relationships updated
+Final Score: {'NAV': 8, 'ENG': 8, 'SCI': 8, 'DEF': 7}
+The TEAM Wins! The Saboteur was unsuccessful.
 
----ROUND 5---
-SCORE: {'NAV': 0, 'ENG': 6, 'SCI': -2, 'DEF': 6}
-Mission Options: ['NAV', 'SCI']
-Selected Mission: SCI
-Mission will lose the team 0 from SCI
+---ROUND 4---
+SCORE: {'NAV': 8, 'ENG': 8, 'SCI': 8, 'DEF': 7}
+Mission Options: ['DEF', 'DEF']
+Selected Mission: DEF
+Mission will lose the team 2 from DEF
 In NAV
-	Players [1, 2, 3]
-	NAV: Player 1 chooses not to FLIP
+	Players [2, 4]
 	NAV: Player 2 chooses not to FLIP
-	NAV: Player 3 chooses not to FLIP
-	The NAV team was NOT SUCCESSFUL.
-	Team scored 0 points for room.
+	NAV: Player 4 chooses to FLIP
+	The NAV team was SUCCESSFUL!
+	Team scored 1 points for room
 In ENG
-	Players [5]
-	ENG: Player 5 chooses not to FLIP
-	The ENG team was NOT SUCCESSFUL.
-	Team scored 0 points for room.
+	Players [3]
+	ENG: Player 3 chooses not to FLIP
+	The ENG team was NOT SUCCESSFUL
+	Team scored 0 points for room
 In SCI
-	Players [0, 4]
-	SCI: Player 0 chooses not to FLIP
+	Players [0]
 	SCI: SABOTEUR chooses to SABOTAGE
 	The SCI team was SUCCESSFUL!
-	Team scored -2 points for room.
+	Team scored -1 points for room
+In DEF
+	Players [1, 5]
+	DEF: Player 1 chooses not to FLIP
+	DEF: Player 5 chooses not to FLIP
+	The DEF team was SUCCESSFUL!
+	Team scored 2 points for room
 Player relationships updated
+Final Score: {'NAV': 9, 'ENG': 8, 'SCI': 7, 'DEF': 7}
+The TEAM Wins! The Saboteur was unsuccessful.
+
+---ROUND 5---
+SCORE: {'NAV': 9, 'ENG': 8, 'SCI': 7, 'DEF': 7}
+Mission Options: ['DEF', 'ENG']
+Selected Mission: ENG
+Mission will lose the team 0 from ENG
+In NAV
+	Players [0]
+	NAV: SABOTEUR chooses to SABOTAGE
+	The NAV team was NOT SUCCESSFUL
+	Team scored 0 points for room
+In ENG
+	Players [2, 5]
+	ENG: Player 2 chooses not to FLIP
+	ENG: Player 5 chooses not to FLIP
+	The ENG team was SUCCESSFUL!
+	Team scored 2 points for room
+In SCI
+	Players [1, 4]
+	SCI: Player 1 chooses not to FLIP
+	SCI: Player 4 chooses to FLIP
+	The SCI team was SUCCESSFUL!
+	Team scored 1 points for room
+In DEF
+	Players [3]
+	DEF: Player 3 chooses not to FLIP
+	The DEF team was SUCCESSFUL!
+	Team scored 1 points for room
+Player relationships updated
+Final Score: {'NAV': 9, 'ENG': 10, 'SCI': 8, 'DEF': 8}
+The TEAM Wins! The Saboteur was unsuccessful.
