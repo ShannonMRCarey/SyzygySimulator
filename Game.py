@@ -11,7 +11,7 @@ class Game:
     def __init__(self, num_players, num_saboteurs):
         self.num_players = num_players
         self.num_saboteurs = num_saboteurs
-        self.gamelog = GameLog.TextGameLog(self.num_players, self.num_saboteurs)
+        self.gamelog = GameLog.HTMLGameLog(self.num_players, self.num_saboteurs)
         #TODO: calculate by formula
         self.mission_points = [0, 1, 2, 3]
 

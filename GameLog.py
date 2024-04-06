@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 import webbrowser
+import base64
+from io import BytesIO
 
 class TextGameLog:
     def __init__(self, num_players, num_saboteurs):
@@ -119,6 +121,73 @@ class HTMLGameLog:
     def log_mission_loss(self, selected_mission, points):
         self.log.write('<p>')
         self.log.write(f'Mission will lose the team {points} from {selected_mission}\n')
+        self.log.write('</p>')
+
+
+    def log_mission_loss(self, selected_mission, points):
+        self.log.write('<p>')
+        self.log.write(f'Mission will lose the team {points} from {selected_mission}\n')
+        self.log.write('</p>')
+
+    def log_challenges(self, name, participants):
+        self.log.write('<p>')
+        if len(participants) > 0:
+            self.log.write(f'In {name}\n')
+            self.log.write(f'\tPlayers {participants}\n')
+        self.log.write('</p>')
+
+    def log_actions(self, actions, challenge):
+        self.log.write('<p>')
+        for player, flip in actions.items():
+            if not player.saboteur:
+                if flip:
+                    self.log.write(f'\t{challenge}: Player {player.id} chooses to FLIP\n')
+                else:
+                    self.log.write(f'\t{challenge}: Player {player.id} chooses not to FLIP\n')
+            else:
+                if flip:
+                    self.log.write(f'\t{challenge}: SABOTEUR chooses to SABOTAGE\n')
+                else:
+                    self.log.write(f'\t{challenge}: SABOTEUR chooses NOT to SABOTAGE\n')
+        self.log.write('</p>')
+
+    def log_challenge_outcomes(self, name, succeeded):
+        self.log.write('<p>')
+        if succeeded:
+            self.log.write(f'\tThe {name} team was SUCCESSFUL!\n')
+        else:
+            self.log.write(f'\tThe {name} team was NOT SUCCESSFUL\n')
+        self.log.write('</p>')
+
+    def score_log(self, name, this_score, new_score):
+        self.log.write('<p>')
+        self.log.write(f'\tTeam scored {this_score} points for room\n')
+        self.log.write('</p>')
+
+    '''the rows in relationships_df represent how each player feels about all the others'''
+    def trust_update_log(self, relationships_df):
+        self.log.write('<p>')
+        self.log.write(f'Player relationships updated\n')
+        if self.log_images:
+            fig = plt.figure()
+            fig.imshow(relationships_df, cmap="RdYlBu")
+            fig.colorbar()
+            fig.xticks(range(len(relationships_df)), relationships_df.columns)
+            fig.yticks(range(len(relationships_df)), relationships_df.index)
+            fig.show()
+            tmpfile = BytesIO()
+            fig.savefig(tmpfile, format='png')
+            encoded = base64.b64encode(tmpfile.getvalue()).decode('utf-8')
+            self.log.write('<img src=\'data:image/png;base64,{}\'>'.format(encoded))
+        self.log.write('</p>')
+
+    def conclusion_log(self, score):
+        self.log.write('<p>')
+        self.log.write(f'Final Score: {score}\n')
+        if min(list(score.values())) < 0:
+            self.log.write("The SABOTEUR has won! The team did not successfully stop them.\n")
+        else:
+            self.log.write("The TEAM Wins! The Saboteur was unsuccessful.\n")
         self.log.write('<p>')
         self.log.write('</body')
         self.log.write('</html>')

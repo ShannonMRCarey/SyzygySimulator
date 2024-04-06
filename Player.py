@@ -150,5 +150,5 @@ class Player:
                         trust_update = 0
                     else:
                         trust_update = self.relationships[player_id]/score[challenge]
-            self.relationships[player_id] = self.relationships[player_id] + trust_update
+                self.relationships[player_id] = self.relationships[player_id] + trust_update
         return self.relationships.values()
