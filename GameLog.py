@@ -1,8 +1,9 @@
 import matplotlib.pyplot as plt
+import webbrowser
 
-class GameLog:
+class TextGameLog:
     def __init__(self, num_players, num_saboteurs):
-        self.log_images = True
+        self.log_images = False
         self.num_players = num_players
         self.num_saboteurs = num_saboteurs
         open("GameLog.txt", 'w').close()
@@ -65,8 +66,8 @@ class GameLog:
             plt.xticks(range(len(relationships_df)), relationships_df.columns)
             plt.yticks(range(len(relationships_df)), relationships_df.index)
             plt.show()
-        else:
-            print(relationships_df)
+        # else:
+        #     print(relationships_df)
 
     def conclusion_log(self, score):
         self.log.write(f'Final Score: {score}\n')
@@ -74,3 +75,51 @@ class GameLog:
             self.log.write("The SABOTEUR has won! The team did not successfully stop them.\n")
         else:
             self.log.write("The TEAM Wins! The Saboteur was unsuccessful.\n")
+
+class HTMLGameLog:
+    def __init__(self, num_players, num_saboteurs):
+        self.log_images = False
+        self.num_players = num_players
+        self.num_saboteurs = num_saboteurs
+        self.file = "GameLog.html"
+        open(self.file, 'w').close()
+        self.log = open(self.file, "a")
+        self.log.write('<html>')
+        self.log.write('<head>')
+        self.log.write('<link href = "styles/style.css" rel = "stylesheet" / >')
+        self.log.write('<title> Syzygy </title>')
+        self.log.write('</head>')
+
+    def log_players(self, players):
+        self.log.write('<body>')
+        self.log.write('<body style="background-color:#363f45">')
+        self.log.write('<h1> INTRODUCING </h1>"""')
+        for p in players:
+            self.log.write('<p>')
+            self.log.write(f'Player {p.id}')
+            if p.saboteur: self.log.write(": THE SABOTEUR")
+            self.log.write(f'\n\tNAV Skill: {p.nav_skill}\n')
+            self.log.write(f'\tENG Skill: {p.eng_skill}\n')
+            self.log.write(f'\tSCI Skill: {p.sci_skill}\n')
+            self.log.write(f'\tDEF Skill: {p.def_skill}\n')
+            self.log.write('</p>')
+
+    def log_round(self, round, score):
+        self.log.write('<p>')
+        self.log.write(f'\n---ROUND {round}---\n')
+        self.log.write(f'SCORE: {score}\n')
+        self.log.write('<p>')
+
+    def log_mission(self, mission, selected_mission):
+        self.log.write('<p>')
+        self.log.write(f'Mission Options: {mission}\n')
+        self.log.write(f'Selected Mission: {selected_mission}\n')
+        self.log.write('<p>')
+
+    def log_mission_loss(self, selected_mission, points):
+        self.log.write('<p>')
+        self.log.write(f'Mission will lose the team {points} from {selected_mission}\n')
+        self.log.write('<p>')
+        self.log.write('</body')
+        self.log.write('</html>')
+        webbrowser.open(self.file)
