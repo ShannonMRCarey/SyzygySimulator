@@ -83,7 +83,6 @@ class Game:
                         "ENG": mode(num_per_chal_votes["NAV"]),
                         "SCI": mode(num_per_chal_votes["NAV"]),
                         "DEF": mode(num_per_chal_votes["NAV"])}
-        # TODO: more elegant solution here
         # if the modes don't add up, add the remaining people to the lowest scoring room
         if sum(num_per_chal.values()) < len(self.players):
             lowest_score = min(self.score.values())
@@ -131,7 +130,6 @@ class Game:
                 if self.detail_log: self.gamelog.log_challenge_outcomes(challenge.name, success)
 
                 # Calculate Score
-                # TODO: len(participants) needs to become the length of participants who did not flip
                 if success:
                     not_flips = len(participants) - flips
                     if sabotaged:
