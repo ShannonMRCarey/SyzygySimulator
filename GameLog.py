@@ -94,11 +94,10 @@ class HTMLGameLog:
 
     def log_players(self, players):
         self.log.write('<body>')
-        self.log.write('<body style="background-color:#363f45">')
         self.log.write('<h1> INTRODUCING </h1>"""')
         for p in players:
+            self.log.write(f'<h2>Player {p.id}</h2>')
             self.log.write('<p>')
-            self.log.write(f'Player {p.id}')
             if p.saboteur: self.log.write(": THE SABOTEUR")
             self.log.write(f'\n\tNAV Skill: {p.nav_skill}\n')
             self.log.write(f'\tENG Skill: {p.eng_skill}\n')
@@ -107,62 +106,42 @@ class HTMLGameLog:
             self.log.write('</p>')
 
     def log_round(self, round, score):
-        self.log.write('<p>')
-        self.log.write(f'\n---ROUND {round}---\n')
-        self.log.write(f'SCORE: {score}\n')
-        self.log.write('<p>')
+        self.log.write(f'\n<h1>---ROUND {round}---</h1>\n')
+        self.log.write(f'<h2>SCORE: {score}</h2>')
 
     def log_mission(self, mission, selected_mission):
-        self.log.write('<p>')
-        self.log.write(f'Mission Options: {mission}\n')
-        self.log.write(f'Selected Mission: {selected_mission}\n')
-        self.log.write('<p>')
+        self.log.write(f'<p> Mission Options: {mission}</p>')
+        self.log.write(f'<p> Selected Mission: {selected_mission}</p>')
 
     def log_mission_loss(self, selected_mission, points):
-        self.log.write('<p>')
-        self.log.write(f'Mission will lose the team {points} from {selected_mission}\n')
-        self.log.write('</p>')
-
-
-    def log_mission_loss(self, selected_mission, points):
-        self.log.write('<p>')
-        self.log.write(f'Mission will lose the team {points} from {selected_mission}\n')
-        self.log.write('</p>')
+        self.log.write(f' <p> {selected_mission} -{points}  </p>')
 
     def log_challenges(self, name, participants):
-        self.log.write('<p>')
         if len(participants) > 0:
-            self.log.write(f'In {name}\n')
-            self.log.write(f'\tPlayers {participants}\n')
-        self.log.write('</p>')
+            self.log.write(f'<h2> {name} </h2>')
+            # self.log.write(f'<p> Players {participants}</p>')
 
     def log_actions(self, actions, challenge):
-        self.log.write('<p>')
         for player, flip in actions.items():
             if not player.saboteur:
                 if flip:
-                    self.log.write(f'\t{challenge}: Player {player.id} chooses to FLIP\n')
+                    self.log.write(f'<p>Player {player.id}: FLIP</p>')
                 else:
-                    self.log.write(f'\t{challenge}: Player {player.id} chooses not to FLIP\n')
+                    self.log.write(f'<p>Player {player.id}: no flip </p>')
             else:
                 if flip:
-                    self.log.write(f'\t{challenge}: SABOTEUR chooses to SABOTAGE\n')
+                    self.log.write(f'<p>Player {player.id}: SABOTAGE</p>')
                 else:
-                    self.log.write(f'\t{challenge}: SABOTEUR chooses NOT to SABOTAGE\n')
-        self.log.write('</p>')
+                    self.log.write(f'<p>Player {player.id}: no sabotage</p>')
 
     def log_challenge_outcomes(self, name, succeeded):
-        self.log.write('<p>')
         if succeeded:
-            self.log.write(f'\tThe {name} team was SUCCESSFUL!\n')
+            self.log.write(f'<p>The {name} team was SUCCESSFUL!</p>')
         else:
-            self.log.write(f'\tThe {name} team was NOT SUCCESSFUL\n')
-        self.log.write('</p>')
+            self.log.write(f'<p>The {name} team was NOT SUCCESSFUL</p>')
 
     def score_log(self, name, this_score, new_score):
-        self.log.write('<p>')
-        self.log.write(f'\tTeam scored {this_score} points for room\n')
-        self.log.write('</p>')
+        self.log.write(f'<p>{name}: +{this_score}</p>')
 
     '''the rows in relationships_df represent how each player feels about all the others'''
     def trust_update_log(self, relationships_df):
@@ -182,13 +161,11 @@ class HTMLGameLog:
         self.log.write('</p>')
 
     def conclusion_log(self, score):
-        self.log.write('<p>')
-        self.log.write(f'Final Score: {score}\n')
+        self.log.write(f'<h2>Final Score: {score}</h2>')
         if min(list(score.values())) < 0:
-            self.log.write("The SABOTEUR has won! The team did not successfully stop them.\n")
+            self.log.write("<h2>The SABOTEUR has won! The team did not successfully stop them.</h2>")
         else:
-            self.log.write("The TEAM Wins! The Saboteur was unsuccessful.\n")
-        self.log.write('<p>')
+            self.log.write("<h2>The TEAM Wins! The Saboteur was unsuccessful.</h2>")
         self.log.write('</body')
         self.log.write('</html>')
         webbrowser.open(self.file)
