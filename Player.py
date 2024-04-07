@@ -52,7 +52,7 @@ class Player:
         num_to_assign = len(self.all_ids)
         # we use a copy of the score to track the challenges to assign (which is based on score)
         considered_score = copy.deepcopy(score)
-        considered_score[selected_mission] = considered_score[selected_mission]-2
+        considered_score[selected_mission] = considered_score[selected_mission]-1
 
         # Get the IDs of everyone you trust in order (if saboteur, prioritize other sketchy-looking people)
         sorted_trust = sorted(self.relationships.items(), key=lambda item: item[1])
@@ -84,7 +84,6 @@ class Player:
         # Figure out how many people to assign to each challenge
         left_to_assign = len(self.all_ids)
         number_to_assign_per_chal = {"NAV": 0, "ENG": 0, "SCI": 0, "DEF": 0}
-        # TODO: come up with different logics, eg. refuse to put anyone with <0.25 trust in a key room
         # Aim to get every score back up to its original
         score_deficit = {"NAV": 0, "ENG": 0, "SCI": 0, "DEF": 0}
         for challenge in score_deficit.keys():
@@ -94,6 +93,7 @@ class Player:
             number_to_assign_per_chal[challenge] += 1
             left_to_assign -= 1
             score_deficit[challenge] -= 1
+            print(f'Player {self.id} assigns 1 to {challenge} ')
             return left_to_assign, score_deficit
 
         while left_to_assign > 0:
@@ -101,13 +101,16 @@ class Player:
             challenge = [key for key, val in score_deficit.items() if val == highest_deficit][0]
             left_to_assign, score_deficit = num_per_chal_assigner(left_to_assign, challenge)
 
-        # if any challenge has exactly one participant, move that participant to the challenge with the lowest score
-        for challenge, assignees in number_to_assign_per_chal.items():
-            if assignees == 1:
-                number_to_assign_per_chal[challenge] = 0
-                low_score = min(considered_score.values())
-                lowest_challenge = [key for key in considered_score if considered_score[key] == low_score][0]
-                number_to_assign_per_chal[lowest_challenge] += 1
+        print(f'original distribution of numbers: {number_to_assign_per_chal}')
+        # if any challenge has exactly one participant, move that participant to a different challenge
+        while any(assignees == 1 for assignees in number_to_assign_per_chal.values()):
+            for challenge, assignees in number_to_assign_per_chal.items():
+                if assignees == 1:
+                    number_to_assign_per_chal[challenge] = 0
+                    #TODO: inefficient, could assign back to itself
+                    random_challenge = random.choice(list(number_to_assign_per_chal.keys()))
+                    number_to_assign_per_chal[random_challenge] += 1
+        print(f'new distribution of numbers: {number_to_assign_per_chal}')
 
         return number_to_assign_per_chal
 

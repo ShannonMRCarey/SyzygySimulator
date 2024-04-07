@@ -1,5 +1,5 @@
 
 Things to improve in the simulator:
-    1) make it so the saboteur doesn't always sabotage
+    1) Make it so the team is highly unlikely to ever assign everyone to the same room
     3) for determine_number_to_assign in Player, come up with different logics, eg. refuse to put anyone with <threshold trust in a key room
     4) Fix mission giving the same two options
