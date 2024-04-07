@@ -93,7 +93,6 @@ class Player:
             number_to_assign_per_chal[challenge] += 1
             left_to_assign -= 1
             score_deficit[challenge] -= 1
-            print(f'Player {self.id} assigns 1 to {challenge} ')
             return left_to_assign, score_deficit
 
         while left_to_assign > 0:
@@ -101,7 +100,6 @@ class Player:
             challenge = [key for key, val in score_deficit.items() if val == highest_deficit][0]
             left_to_assign, score_deficit = num_per_chal_assigner(left_to_assign, challenge)
 
-        print(f'original distribution of numbers: {number_to_assign_per_chal}')
         # if any challenge has exactly one participant, move that participant to a different challenge
         while any(assignees == 1 for assignees in number_to_assign_per_chal.values()):
             for challenge, assignees in number_to_assign_per_chal.items():
@@ -110,14 +108,13 @@ class Player:
                     #TODO: inefficient, could assign back to itself
                     random_challenge = random.choice(list(number_to_assign_per_chal.keys()))
                     number_to_assign_per_chal[random_challenge] += 1
-        print(f'new distribution of numbers: {number_to_assign_per_chal}')
 
         return number_to_assign_per_chal
 
     def check_in_for_challenge(self, challenge_participants):
         # true for a flip or sabotage, false for no flip or sabotage
         flip = False
-        # if we knew nothing about anyone, excluding ourselves, what's the chance that one of these people is the saboteur?
+        # if we knew nothing about anyone but ourselves, what's the chance that one of these people is the saboteur?
         random_chance = (len(challenge_participants) - 1) / (len(self.all_ids) - 1)
         if self.saboteur:
             # if we think the random chance is high, it means there's a good chance we get away with this

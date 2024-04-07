@@ -94,29 +94,40 @@ class HTMLGameLog:
 
     def log_players(self, players):
         self.log.write('<body>')
-        self.log.write('<h1> INTRODUCING </h1>"""')
+        self.log.write('<h1> INTRODUCING </h1>')
+        self.log.write('<table style="width:100%">')
+        self.log.write('<tr>')
         for p in players:
-            self.log.write(f'<h2>Player {p.id}</h2>')
-            self.log.write('<p>')
-            if p.saboteur: self.log.write(": THE SABOTEUR")
-            self.log.write(f'\n\tNAV Skill: {p.nav_skill}\n')
-            self.log.write(f'\tENG Skill: {p.eng_skill}\n')
-            self.log.write(f'\tSCI Skill: {p.sci_skill}\n')
-            self.log.write(f'\tDEF Skill: {p.def_skill}\n')
-            self.log.write('</p>')
+            self.log.write(f'<th>Player {p.id}</th>')
+        self.log.write('</tr>')
+        self.log.write('<tr>')
+        for p in players:
+            self.log.write('<td>')
+            if p.saboteur: self.log.write("THE SABOTEUR <br>")
+            self.log.write(f'NAV Skill: {p.nav_skill}<br>')
+            self.log.write(f'ENG Skill: {p.eng_skill}<br>')
+            self.log.write(f'SCI Skill: {p.sci_skill}<br>')
+            self.log.write(f'DEF Skill: {p.def_skill}<br>')
+            self.log.write('</td>')
+        self.log.write('</tr>')
+        self.log.write('</table>')
 
     def log_round(self, round, score):
-        self.log.write(f'\n<h1>---ROUND {round}---</h1>\n')
-        self.log.write(f'<h2>SCORE: {score}</h2>')
+        self.log.write('<br><br>')
+        self.log.write('<table style="width:100%">')
+        self.log.write('<tr>')
+        self.log.write(f'\n<th>ROUND {round}</th>\n')
+        self.log.write(f'<td>SCORE: {score}</td>')
 
     def log_mission(self, mission, selected_mission):
-        self.log.write(f'<p> Mission Options: {mission}</p>')
-        self.log.write(f'<p> Selected Mission: {selected_mission}</p>')
+        self.log.write(f'<td> Mission Options: {mission}</td>')
+        self.log.write(f'<td> Selected Mission: {selected_mission}</td>')
 
     def log_mission_loss(self, selected_mission, points):
-        self.log.write(f' <p> {selected_mission} -{points}  </p>')
+        self.log.write(f' <td> {selected_mission} -{points}  </td>')
 
     def log_challenges(self, name, participants):
+        self.log.write('<td>')
         if len(participants) > 0:
             self.log.write(f'<h2> {name} </h2>')
             # self.log.write(f'<p> Players {participants}</p>')
@@ -142,11 +153,11 @@ class HTMLGameLog:
 
     def score_log(self, name, this_score, new_score):
         self.log.write(f'<p>{name}: +{this_score}</p>')
+        self.log.write('</td>')
 
     '''the rows in relationships_df represent how each player feels about all the others'''
     def trust_update_log(self, relationships_df):
-        self.log.write('<p>')
-        self.log.write(f'Player relationships updated\n')
+        self.log.write('<td>')
         if self.log_images:
             fig = plt.figure()
             fig.imshow(relationships_df, cmap="RdYlBu")
@@ -158,7 +169,8 @@ class HTMLGameLog:
             fig.savefig(tmpfile, format='png')
             encoded = base64.b64encode(tmpfile.getvalue()).decode('utf-8')
             self.log.write('<img src=\'data:image/png;base64,{}\'>'.format(encoded))
-        self.log.write('</p>')
+        self.log.write('</td>')
+        self.log.write('</table>')
 
     def conclusion_log(self, score):
         self.log.write(f'<h2>Final Score: {score}</h2>')
