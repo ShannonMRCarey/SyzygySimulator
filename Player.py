@@ -10,7 +10,7 @@ class Player:
         self.saboteur = saboteur
         # random numbers between 0 and 1 to represent this player's skills and personality
         self.trust = round(random.random(), 2)
-        self.trust_threshold = 0.25
+        self.trust_threshold = self.trust/2
         self.intelligence = round(random.random(), 2)
         self.nav_skill = round(random.random(), 2)
         self.eng_skill = round(random.random(), 2)
@@ -113,12 +113,16 @@ class Player:
 
     def check_in_for_challenge(self, challenge_participants):
         # true for a flip or sabotage, false for no flip or sabotage
-        # where challenge_participants is a list of Player IDs
         flip = False
+        # if we knew nothing about anyone, excluding ourselves, what's the chance that one of these people is the saboteur?
+        random_chance = (len(challenge_participants) - 1) / (len(self.all_ids) - 1)
         if self.saboteur:
-            # TODO: more complicated logic here
-            return True
+            # if we think the random chance is high, it means there's a good chance we get away with this
+            choice = random.choices([True, False], weights=[random_chance, 1-random_chance], k=1)
+            return choice
         else:
+            if 1-random_chance < self.trust_threshold:
+                return True
             for player in challenge_participants:
                 if self.relationships[player.id] < self.trust_threshold:
                     return True
