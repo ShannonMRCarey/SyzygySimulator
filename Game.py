@@ -60,7 +60,7 @@ class Game:
         if self.detail_log: self.gamelog.log_round(round_num, self.score)
 
         # SELECT A MISSION
-        mission = random.choices(self.challenge_names, k=2)
+        mission = random.sample(self.challenge_names, k=2)
         mission_votes = [player.vote_for_mission(mission, self.score)[0] for player in self.players]
         selected_mission = max(Counter(mission_votes))
         if self.detail_log: self.gamelog.log_mission(mission, selected_mission)

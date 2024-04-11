@@ -95,7 +95,7 @@ class HTMLGameLog:
     def log_players(self, players):
         self.log.write('<body>')
         self.log.write('<h1> INTRODUCING </h1>')
-        self.log.write('<table style="width:100%">')
+        self.log.write('<table style="width:50%" class="center">')
         self.log.write('<tr>')
         for p in players:
             self.log.write(f'<th>Player {p.id}</th>')
@@ -116,40 +116,44 @@ class HTMLGameLog:
         self.log.write('<br><br>')
         self.log.write('<table style="width:100%">')
         self.log.write('<tr>')
-        self.log.write(f'\n<th>ROUND {round}</th>\n')
-        self.log.write(f'<td>SCORE: {score}</td>')
+        self.log.write(f'<th style="width:15%">ROUND {round}</th>')
+
+        self.log.write(f'<td style="width:15%">{score}</td>')
 
     def log_mission(self, mission, selected_mission):
-        self.log.write(f'<td> Mission Options: {mission}</td>')
-        self.log.write(f'<td> Selected Mission: {selected_mission}</td>')
+        for m in mission:
+            if m == selected_mission:
+                self.log.write(f'<td style="width:3%"><b>{m}</b></td>')
+            else:
+                self.log.write(f'<td style="width:3%">{m}</td>')
 
     def log_mission_loss(self, selected_mission, points):
-        self.log.write(f' <td> {selected_mission} -{points}  </td>')
+        self.log.write(f' <td style="width:3%"> {selected_mission} -{points}  </td>')
 
     def log_challenges(self, name, participants):
         self.log.write('<td>')
         if len(participants) > 0:
-            self.log.write(f'<h2> {name} </h2>')
+            self.log.write(f'<b>{name}</b><br>')
             # self.log.write(f'<p> Players {participants}</p>')
 
     def log_actions(self, actions, challenge):
         for player, flip in actions.items():
             if not player.saboteur:
                 if flip:
-                    self.log.write(f'<p>Player {player.id}: FLIP</p>')
+                    self.log.write(f'Player {player.id}: FLIP<br>')
                 else:
-                    self.log.write(f'<p>Player {player.id}: no flip </p>')
+                    self.log.write(f'Player {player.id}: no flip <br>')
             else:
                 if flip:
-                    self.log.write(f'<p>Player {player.id}: SABOTAGE</p>')
+                    self.log.write(f'Player {player.id}: SABOTAGE<br>')
                 else:
-                    self.log.write(f'<p>Player {player.id}: no sabotage</p>')
+                    self.log.write(f'Player {player.id}: no sabotage<br>')
 
     def log_challenge_outcomes(self, name, succeeded):
         if succeeded:
-            self.log.write(f'<p>The {name} team was SUCCESSFUL!</p>')
+            self.log.write(f'The {name} team was SUCCESSFUL!<br>')
         else:
-            self.log.write(f'<p>The {name} team was NOT SUCCESSFUL</p>')
+            self.log.write(f'The {name} team was NOT SUCCESSFUL<br>')
 
     def score_log(self, name, this_score, new_score):
         self.log.write(f'<p>{name}: +{this_score}</p>')
