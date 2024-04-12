@@ -109,6 +109,15 @@ class Player:
                     random_challenge = random.choice(list(number_to_assign_per_chal.keys()))
                     number_to_assign_per_chal[random_challenge] += 1
 
+        # if they're smart, they won't want to put everyone in one room (too risky, and they won't learn as much)
+        if self.intelligence > 0.5:
+            while any(assignees == len(self.all_ids) for assignees in number_to_assign_per_chal.values()):
+                for challenge, assignees in number_to_assign_per_chal.items():
+                    if assignees == len(self.all_ids):
+                        number_to_assign_per_chal[challenge] = number_to_assign_per_chal[challenge]-2
+                        random_challenge = random.choice(list(number_to_assign_per_chal.keys()))
+                        number_to_assign_per_chal[random_challenge] += 2
+
         return number_to_assign_per_chal
 
     def check_in_for_challenge(self, challenge_participants):
@@ -148,6 +157,9 @@ class Player:
                     if score[challenge] == 0:
                         trust_update = 0
                     else:
-                        trust_update = self.relationships[player_id]/score[challenge]
+                        if score[challenge] > 0:
+                            trust_update = (1-self.relationships[player_id])/score[challenge]
+                        else:
+                            trust_update = self.relationships[player_id]/score[challenge]
                 self.relationships[player_id] = self.relationships[player_id] + trust_update
         return self.relationships.values()

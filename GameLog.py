@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import webbrowser
-import base64
-from io import BytesIO
+import pandas as pd
+
 
 class TextGameLog:
     def __init__(self, num_players, num_saboteurs):
@@ -83,9 +83,16 @@ class HTMLGameLog:
         self.log_images = False
         self.num_players = num_players
         self.num_saboteurs = num_saboteurs
+
+        self.active_challenges = []
+        self.challenge_flips = []
+        self.challenge_outcomes = []
+        self.challenge_score = []
+
         self.file = "GameLog.html"
         open(self.file, 'w').close()
         self.log = open(self.file, "a")
+
         self.log.write('<html>')
         self.log.write('<head>')
         self.log.write('<link href = "styles/style.css" rel = "stylesheet" / >')
@@ -94,6 +101,8 @@ class HTMLGameLog:
 
     def log_players(self, players):
         self.log.write('<body>')
+        self.log.write('<div class="intro">')
+        self.log.write('<br>')
         self.log.write('<h1> INTRODUCING </h1>')
         self.log.write('<table style="width:50%" class="center">')
         self.log.write('<tr>')
@@ -103,76 +112,106 @@ class HTMLGameLog:
         self.log.write('<tr>')
         for p in players:
             self.log.write('<td>')
-            if p.saboteur: self.log.write("THE SABOTEUR <br>")
-            self.log.write(f'NAV Skill: {p.nav_skill}<br>')
-            self.log.write(f'ENG Skill: {p.eng_skill}<br>')
-            self.log.write(f'SCI Skill: {p.sci_skill}<br>')
-            self.log.write(f'DEF Skill: {p.def_skill}<br>')
+            self.log.write('<br>')
+            self.log.write(f'Trust: {p.trust:.0%}<br>')
+            self.log.write(f'Intelligence: {p.intelligence:.0%}<br>')
+            self.log.write('<br>')
+            self.log.write(f'NAV: {p.nav_skill:.0%}<br>')
+            self.log.write(f'ENG: {p.eng_skill:.0%}<br>')
+            self.log.write(f'SCI: {p.sci_skill:.0%}<br>')
+            self.log.write(f'DEF: {p.def_skill:.0%}<br>')
+            if p.saboteur:
+                self.log.write(f'<span style="background-color:#ad3624">')
+                self.log.write('<br>THE SABOTEUR<br>')
+                self.log.write('</span>')
             self.log.write('</td>')
         self.log.write('</tr>')
         self.log.write('</table>')
+        self.log.write('<br><br>')
+        self.log.write('</div>')
 
     def log_round(self, round, score):
-        self.log.write('<br><br>')
-        self.log.write('<table style="width:100%">')
-        self.log.write('<tr>')
-        self.log.write(f'<th style="width:15%">ROUND {round}</th>')
+        self.active_challenges = []
+        self.challenge_flips = []
+        self.challenge_outcomes = []
+        self.challenge_score = []
 
-        self.log.write(f'<td style="width:15%">{score}</td>')
+        self.log.write('<div class="round">')
+        self.log.write('<br><br>')
+        self.log.write('<table style="width:60%" class="center">')
+        self.log.write('<tr>')
+        self.log.write(f'<th style="width:15%">ROUND<br>{round}</th>')
+
+        self.log.write('<td style="width:10%">')
+        for chal, num in score.items():
+            self.log.write(f'{chal} {num}<br>')
+        self.log.write('</td>')
 
     def log_mission(self, mission, selected_mission):
+        self.log.write('<td style="width:10%">')
         for m in mission:
             if m == selected_mission:
-                self.log.write(f'<td style="width:3%"><b>{m}</b></td>')
+                self.log.write(f'<b>{m}</b><br>')
             else:
-                self.log.write(f'<td style="width:3%">{m}</td>')
+                self.log.write(f'{m}<br>')
+        self.log.write('</td>')
 
     def log_mission_loss(self, selected_mission, points):
-        self.log.write(f' <td style="width:3%"> {selected_mission} -{points}  </td>')
+        self.log.write(f'<td style="width:10%"> {selected_mission} -{points}  </td>')
 
-    def log_challenges(self, name, participants):
-        self.log.write('<td>')
+    def log_challenges(self, challenge, participants):
         if len(participants) > 0:
-            self.log.write(f'<b>{name}</b><br>')
-            # self.log.write(f'<p> Players {participants}</p>')
+            self.active_challenges.append(challenge)
 
     def log_actions(self, actions, challenge):
+        html_friendly_actions = ""
         for player, flip in actions.items():
             if not player.saboteur:
                 if flip:
-                    self.log.write(f'Player {player.id}: FLIP<br>')
+                    html_friendly_actions +='Player ' + str(player.id) + ': FLIP<br>'
                 else:
-                    self.log.write(f'Player {player.id}: no flip <br>')
+                    html_friendly_actions +='Player ' + str(player.id) + ': no flip<br>'
             else:
                 if flip:
-                    self.log.write(f'Player {player.id}: SABOTAGE<br>')
+                    html_friendly_actions +='Player ' + str(player.id) + ': SABOTAGE<br>'
                 else:
-                    self.log.write(f'Player {player.id}: no sabotage<br>')
+                    html_friendly_actions +='Player ' + str(player.id) + ': no sabotage<br>'
+        self.challenge_flips.append(html_friendly_actions)
 
     def log_challenge_outcomes(self, name, succeeded):
         if succeeded:
-            self.log.write(f'The {name} team was SUCCESSFUL!<br>')
+            self.challenge_outcomes.append(f'SUCCESSFUL')
         else:
-            self.log.write(f'The {name} team was NOT SUCCESSFUL<br>')
+            self.challenge_outcomes.append(f'UNSUCCESSFUL')
 
     def score_log(self, name, this_score, new_score):
-        self.log.write(f'<p>{name}: +{this_score}</p>')
-        self.log.write('</td>')
+        if this_score < 0:
+            self.challenge_score.append(f'{name}: {this_score}')
+        else:
+            self.challenge_score.append(f'{name}: +{this_score}')
 
     '''the rows in relationships_df represent how each player feels about all the others'''
     def trust_update_log(self, relationships_df):
+        # First print challenge outcome
         self.log.write('<td>')
-        if self.log_images:
-            fig = plt.figure()
-            fig.imshow(relationships_df, cmap="RdYlBu")
-            fig.colorbar()
-            fig.xticks(range(len(relationships_df)), relationships_df.columns)
-            fig.yticks(range(len(relationships_df)), relationships_df.index)
-            fig.show()
-            tmpfile = BytesIO()
-            fig.savefig(tmpfile, format='png')
-            encoded = base64.b64encode(tmpfile.getvalue()).decode('utf-8')
-            self.log.write('<img src=\'data:image/png;base64,{}\'>'.format(encoded))
+        challenge_df = pd.DataFrame(list(zip(self.active_challenges,
+                                   self.challenge_flips,
+                                   self.challenge_outcomes,
+                                   self.challenge_score)),
+                          columns=['challenge', 'choices', 'outcomes', 'scores'])
+        challenge_df.set_index('challenge', inplace=True)
+        self.log.write(challenge_df.to_html(classes='round',
+                                            header=False,
+                                            index_names=False,
+                                            escape=False,
+                                            border=0,
+                                            justify='center'))
+        self.log.write('</td>')
+
+        # Then print updated trust
+        trust_df = relationships_df.style.background_gradient(axis=0, vmin=0, vmax=1, cmap="RdYlGn").format(precision=2)
+        self.log.write('<td style="width:15%">')
+        self.log.write(trust_df.to_html(border=0))
         self.log.write('</td>')
         self.log.write('</table>')
 
@@ -182,6 +221,7 @@ class HTMLGameLog:
             self.log.write("<h2>The SABOTEUR has won! The team did not successfully stop them.</h2>")
         else:
             self.log.write("<h2>The TEAM Wins! The Saboteur was unsuccessful.</h2>")
+        self.log.write('</div>')
         self.log.write('</body')
         self.log.write('</html>')
         webbrowser.open(self.file)

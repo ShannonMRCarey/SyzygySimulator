@@ -1,34 +1,59 @@
-body {
-  background-color: SlateGrey;
-}
-h1 {
-    color: #ffffff;
-    text-align: center;
-    font-size: 24px;
-}
-h2 {
-    color: #ffffff;
-    text-align: left;
-    font-size: 14px;
-}
-p {
-    color: #ffffff;
-    text-align: center;
-    font-size: 12px;
-}
-th {
-    color: #ffffff;
-    text-align: center;
-    vertical-align: top;
-    font-size: 16px;
-}
-td {
-    color: #000000;
-    text-align: center;
-    vertical-align: top;
-    font-size: 12px;
-}
 .center {
   margin-left: auto;
   margin-right: auto;
 }
+.intro {
+  background-color: #32373B;
+  font-family: Garamond, serif;
+}
+.intro h1 {
+  color: #FBFBFB;
+  text-align: center;
+  font-size: 24px;
+}
+.intro h2 {
+  color: #FBFBFB;
+  text-align: left;
+  font-size: 14px;
+}
+.intro th {
+  color: #e9e6ed;
+  text-align: center;
+  vertical-align: top;
+  font-size: 16px;
+}
+.intro td {
+  color: #e9e6ed;
+  text-align: center;
+  vertical-align: top;
+  font-size: 12px;
+}
+.round {
+  background-color: #4A5859;
+  font-family: Garamond, serif;
+}
+.round h1 {
+  color: #FBFBFB;
+  text-align: center;
+  font-size: 24px;
+}
+.round h2 {
+  color: #FBFBFB;
+  text-align: center;
+  font-size: 14px;
+}
+.round th {
+  color: #e9e6ed;
+  text-align: center;
+  font-size: 16px;
+}
+.round td {
+  color: #e9e6ed;
+  text-align: center;
+  font-size: 12px;
+}
+.round tr:hover {
+    background: #5f7678;
+    cursor: pointer;
+}
+

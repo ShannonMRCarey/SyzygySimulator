@@ -1,0 +1,4 @@
+Ways we can tune the simulation:
+
+1. Number of rounds
+2. Threshold for challenge success

@@ -37,7 +37,7 @@ class Challenge:
             percent_success = sum(completed_successfully)/len(completed_successfully)
         else:
             percent_success = 1
-        if percent_success >= 0.5:
+        if percent_success >= 0.33:
             return True
         else:
             return False
