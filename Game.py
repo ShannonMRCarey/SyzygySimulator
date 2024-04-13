@@ -137,7 +137,7 @@ class Game:
                     else:
                         score = not_flips - flips
                 else:
-                    score = 0
+                    score = -1
                 # remember the change in challenge score for this round
                 round_score[challenge.name] = score
                 # update the global scores

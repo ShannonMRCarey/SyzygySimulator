@@ -149,17 +149,26 @@ class Player:
     not global score) and assignments {NAV: [ids in nav], ENG: [ids in eng] ... DEF: [ids in def]'''
     def update_trust(self, score, assignments):
         for challenge, player_ids in assignments.items():
-            # we continue to trust ourselves
             for player_id in player_ids:
+                players_considered = len(player_ids)
+                # if we were in the room, don't count ourselves towards our suspicions
+                if self.id in player_ids:
+                    players_considered -= 1
+                # we continue to trust ourselves
                 if player_id == self.id:
                     trust_update = 0
                 else:
-                    if score[challenge] == 0:
+                    # this should never happen but jic
+                    if players_considered == 0:
                         trust_update = 0
+                        print("WARNING: you shouldn't be able to get here!")
                     else:
+                        curr_trust = self.relationships[player_id]
                         if score[challenge] > 0:
-                            trust_update = (1-self.relationships[player_id])/score[challenge]
+                            # if n people contributed to this room score trust moves 1/n of the remaining dist up
+                            trust_update = (1-curr_trust)/players_considered
                         else:
-                            trust_update = self.relationships[player_id]/score[challenge]
+                            # if n people contributed to this room score trust moves 1/n of the remaining dist down
+                            trust_update = -curr_trust/players_considered
                 self.relationships[player_id] = self.relationships[player_id] + trust_update
         return self.relationships.values()
