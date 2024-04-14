@@ -74,6 +74,7 @@ class Game:
         # where one vote is {"NAV": [ids], "ENG": [ids], "SCI": [ids], "DEF": [ids]}
         room_votes = [player.vote_for_assignments(selected_mission, self.starting_score, self.score) for player in self.players]
         assignments = {"NAV": [], "ENG": [], "SCI": [], "DEF": []}
+        total_votes_by_id = {}
         for id in self.player_ids:
             total_votes = {"NAV": 0, "ENG": 0, "SCI": 0, "DEF": 0}
             for vote in room_votes:
@@ -83,6 +84,18 @@ class Game:
                 if id in vote["DEF"]: total_votes["DEF"] = total_votes["DEF"] + 1
             most_votes = max(total_votes, key=lambda challenge: total_votes[challenge])
             assignments[most_votes].append(id)
+            total_votes_by_id[id] = total_votes
+
+        while any([len(player_list)==1 for player_list in assignments.values()]):
+            for challenge, players in assignments.items():
+                if len(players) == 1:
+                    this_player = players[0]
+                    # remove this challenge from this player's voted-into list
+                    total_votes_by_id[this_player].pop(challenge)
+                    # reassign the player to the new max votes
+                    assignments[challenge].remove(this_player)
+                    most_votes = max(total_votes, key=lambda challenge: total_votes[challenge])
+                    assignments[most_votes].append(id)
 
         # SET UP CHALLENGES
         round_score = {}

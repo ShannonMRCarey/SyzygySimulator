@@ -221,6 +221,7 @@ class HTMLGameLog:
             self.log.write('<h2>The <span style="background-color:#ad3624">SABOTEUR</span> has won!</h2>')
         else:
             self.log.write("<h2>The TEAM Wins! The Saboteur was unsuccessful.</h2>")
+        self.log.write('<br><br>')
         self.log.write('</div>')
         self.log.write('</body')
         self.log.write('</html>')
