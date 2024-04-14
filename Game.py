@@ -72,41 +72,17 @@ class Game:
 
         # DETERMINE ROOM ASSIGNMENTS
         # where one vote is {"NAV": [ids], "ENG": [ids], "SCI": [ids], "DEF": [ids]}
-        challenge_votes = [player.vote_for_assignments(selected_mission, self.starting_score, self.score) for player in self.players]
-
-        # use mode of votes to determine how many people should be in each room
-        num_per_chal_votes = {"NAV": [], "ENG": [], "SCI": [], "DEF": []}
-        for v in challenge_votes:
-            for challenge, ids in v.items():
-                num_per_chal_votes[challenge].append(len(ids))
-        num_per_chal = {"NAV": mode(num_per_chal_votes["NAV"]),
-                        "ENG": mode(num_per_chal_votes["NAV"]),
-                        "SCI": mode(num_per_chal_votes["NAV"]),
-                        "DEF": mode(num_per_chal_votes["NAV"])}
-        # if the modes don't add up, add the remaining people to the lowest scoring room
-        if sum(num_per_chal.values()) < len(self.players):
-            lowest_score = min(self.score.values())
-            challenge = [key for key, val in self.score.items() if val == lowest_score][0]
-            num_per_chal[challenge] = num_per_chal[challenge] + (len(self.players)-sum(num_per_chal.values()))
-
-        # assign people to challenges based on votes
+        room_votes = [player.vote_for_assignments(selected_mission, self.starting_score, self.score) for player in self.players]
         assignments = {"NAV": [], "ENG": [], "SCI": [], "DEF": []}
-        to_assign = copy.deepcopy(self.player_ids)
-
-        # for each challenge
-        for challenge, num_participants in num_per_chal.items():
-            # assign the number of people who belong in that room
-            for i in range(min(len(to_assign),num_participants)):
-                # figure out who received votes to participate in this challenge
-                votes_for_this_chal = []
-                [votes_for_this_chal.extend(v[challenge]) for v in challenge_votes]
-                # only include those who have not been assigned
-                votes_for_this_chal = [v for v in votes_for_this_chal if v in to_assign]
-                if len(votes_for_this_chal) > 0:
-                    # figure out who to assign
-                    player_assigned = mode(votes_for_this_chal)
-                    assignments[challenge].append(player_assigned)
-                    to_assign.remove(player_assigned)
+        for id in self.player_ids:
+            total_votes = {"NAV": 0, "ENG": 0, "SCI": 0, "DEF": 0}
+            for vote in room_votes:
+                if id in vote["NAV"]: total_votes["NAV"] = total_votes["NAV"] + 1
+                if id in vote["ENG"]: total_votes["ENG"] = total_votes["ENG"] + 1
+                if id in vote["SCI"]: total_votes["SCI"] = total_votes["SCI"] + 1
+                if id in vote["DEF"]: total_votes["DEF"] = total_votes["DEF"] + 1
+            most_votes = max(total_votes, key=lambda challenge: total_votes[challenge])
+            assignments[most_votes].append(id)
 
         # SET UP CHALLENGES
         round_score = {}
