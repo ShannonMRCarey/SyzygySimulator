@@ -151,7 +151,7 @@ class Game:
         return self.score, win
 
 if __name__ == '__main__':
-    n = 6
+    n = 8
     saboteurs = 1
     difficulty = 2
     logging = True

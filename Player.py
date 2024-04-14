@@ -92,7 +92,7 @@ class Player:
         if self.saboteur:
             # if we think the random chance is high, it means there's a good chance we get away with this
             choice = random.choices([True, False], weights=[random_chance, 1-random_chance], k=1)
-            return choice
+            return choice[0]
         else:
             if 1-random_chance < self.trust_threshold:
                 return True
