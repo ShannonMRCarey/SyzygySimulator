@@ -59,12 +59,13 @@ class Player:
         sorted_score = [challenge for (challenge, score) in sorted_score]
 
         # Normalize trust scores
+        normalized_trust = {}
         total_trust = sum(self.relationships.values())
         for person, trust in self.relationships.items():
-            self.relationships[person] = round(trust/total_trust,2)
+            normalized_trust[person] = round(trust/total_trust,2)
 
         # Get the IDs of everyone you trust in order (if saboteur, prioritize other sketchy-looking people)
-        sorted_trust = sorted(self.relationships.items(), key=lambda item: item[1])
+        sorted_trust = sorted(normalized_trust.items(), key=lambda item: item[1])
         sorted_trust = [id for (id, trust) in sorted_trust]
         # Good guys want the person they trust most first in the list
         if not self.saboteur:

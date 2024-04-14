@@ -218,7 +218,7 @@ class HTMLGameLog:
     def conclusion_log(self, score):
         self.log.write(f'<h2>Final Score: {score}</h2>')
         if min(list(score.values())) < 0:
-            self.log.write("<h2>The SABOTEUR has won! The team did not successfully stop them.</h2>")
+            self.log.write('<h2>The <span style="background-color:#ad3624">SABOTEUR</span> has won!</h2>')
         else:
             self.log.write("<h2>The TEAM Wins! The Saboteur was unsuccessful.</h2>")
         self.log.write('</div>')
