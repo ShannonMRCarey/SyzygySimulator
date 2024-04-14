@@ -49,10 +49,19 @@ class Player:
          "SCI": [id], "DEF": [id]} '''
     def vote_for_assignments(self, selected_mission, starting_score, score):
         assignments = {"NAV": [], "ENG": [], "SCI": [], "DEF": []}
-        num_to_assign = len(self.all_ids)
-        # we use a copy of the score to track the challenges to assign (which is based on score)
+
+        # we predict out what the next score will be but subtracting the average mission penalty for selected mission
         considered_score = copy.deepcopy(score)
-        considered_score[selected_mission] = considered_score[selected_mission]-1
+        considered_score[selected_mission] = considered_score[selected_mission]-2
+
+        # Get the scores from lowest to highest
+        sorted_score = sorted(considered_score.items(), key=lambda item: item[1])
+        sorted_score = [challenge for (challenge, score) in sorted_score]
+
+        # Normalize trust scores
+        total_trust = sum(self.relationships.values())
+        for person, trust in self.relationships.items():
+            self.relationships[person] = round(trust/total_trust,2)
 
         # Get the IDs of everyone you trust in order (if saboteur, prioritize other sketchy-looking people)
         sorted_trust = sorted(self.relationships.items(), key=lambda item: item[1])
@@ -61,64 +70,28 @@ class Player:
         if not self.saboteur:
             sorted_trust.reverse()
 
-        # number of people to assign to each challenge in form {"NAV": int, "ENG": int, "SCI": int, "DEF": int}
-        number_to_assign_per_chal = self.determine_number_to_assign(starting_score, considered_score)
-
-        # sort them so that we assign by order of challenge importance/low score
-        ordered_number_to_assign_per_chal = {k: v for k, v in sorted(number_to_assign_per_chal.items(),
-                                                                     key=lambda item: item[1],
-                                                                     reverse=True)}
-
-        # While anyone is still unassigned, keep assigning them in order of trust
-        while num_to_assign > 0:
-            for challenge, assigning in ordered_number_to_assign_per_chal.items():
-                assignments[challenge] = sorted_trust[0:assigning]
-                # updates list of remaining challenges, scores, and people left to consider
-                considered_score.pop(challenge)
-                for i in assignments[challenge]:
-                    sorted_trust.remove(i)
-                num_to_assign -= assigning
+        # figure out how many people should be in a room, in order of room priority/importance (lowest score)
+        for chal in sorted_score:
+            score_deficit = starting_score - score[chal]
+            # find the number of participants who will give us the highest expected value
+            num_participants_for_best_outcome = 0
+            best_score = 0
+            for num_participants in range(2, len(self.all_ids)+1):
+                # 1 and n-1 are not valid numbers because you can't have one person alone in a room
+                if not num_participants == len(self.all_ids)-1:
+                    # TODO: add risk multiplier so we don't always pick 2
+                    max_score = num_participants
+                    # the chances that all of these people are good at once
+                    trust_slice = [self.relationships[p] for p in sorted_trust[0:num_participants]]
+                    trust_product = np.prod(trust_slice)
+                    expected_score = max_score * trust_product
+                    if expected_score > best_score:
+                        num_participants_for_best_outcome = num_participants
+                        best_score = expected_score
+            # assign the first n trusted people to the challenge, and remove those people from consideration
+            assignments[chal] = sorted_trust[:num_participants_for_best_outcome]
+            sorted_trust = sorted_trust[num_participants_for_best_outcome:]
         return assignments
-
-    def determine_number_to_assign(self, starting_score, considered_score):
-        # Figure out how many people to assign to each challenge
-        left_to_assign = len(self.all_ids)
-        number_to_assign_per_chal = {"NAV": 0, "ENG": 0, "SCI": 0, "DEF": 0}
-        # Aim to get every score back up to its original
-        score_deficit = {"NAV": 0, "ENG": 0, "SCI": 0, "DEF": 0}
-        for challenge in score_deficit.keys():
-            score_deficit[challenge] = starting_score - considered_score[challenge]
-        # takes the number of players left to assign and the highest deficit challenge and adds a player to that chal
-        def num_per_chal_assigner(left_to_assign, challenge):
-            number_to_assign_per_chal[challenge] += 1
-            left_to_assign -= 1
-            score_deficit[challenge] -= 1
-            return left_to_assign, score_deficit
-
-        while left_to_assign > 0:
-            highest_deficit = max(score_deficit.values())
-            challenge = [key for key, val in score_deficit.items() if val == highest_deficit][0]
-            left_to_assign, score_deficit = num_per_chal_assigner(left_to_assign, challenge)
-
-        # if any challenge has exactly one participant, move that participant to a different challenge
-        while any(assignees == 1 for assignees in number_to_assign_per_chal.values()):
-            for challenge, assignees in number_to_assign_per_chal.items():
-                if assignees == 1:
-                    number_to_assign_per_chal[challenge] = 0
-                    #TODO: inefficient, could assign back to itself
-                    random_challenge = random.choice(list(number_to_assign_per_chal.keys()))
-                    number_to_assign_per_chal[random_challenge] += 1
-
-        # if they're smart, they won't want to put everyone in one room (too risky, and they won't learn as much)
-        if self.intelligence > 0.5:
-            while any(assignees == len(self.all_ids) for assignees in number_to_assign_per_chal.values()):
-                for challenge, assignees in number_to_assign_per_chal.items():
-                    if assignees == len(self.all_ids):
-                        number_to_assign_per_chal[challenge] = number_to_assign_per_chal[challenge]-2
-                        random_challenge = random.choice(list(number_to_assign_per_chal.keys()))
-                        number_to_assign_per_chal[random_challenge] += 2
-
-        return number_to_assign_per_chal
 
     def check_in_for_challenge(self, challenge_participants):
         # true for a flip or sabotage, false for no flip or sabotage

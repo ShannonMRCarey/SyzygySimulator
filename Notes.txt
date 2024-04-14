@@ -1,5 +1,7 @@
 
 Things to improve in the simulator:
     1) Make it so the team is highly unlikely to ever assign everyone to the same room
+    2) Normalize player trusts, so if they're convinced one person is bad, they're convinced the others are good
     3) for determine_number_to_assign in Player, come up with different logics, eg. refuse to put anyone with <threshold trust in a key room
     4) Make it clearer what the trust matrix means
+    5) Make it so that everyone has to be assigned to a room!

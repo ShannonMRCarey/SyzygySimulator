@@ -74,6 +74,27 @@ class PlayerAI:
         three_rooms = [[1,1,1,0],[1,1,0,1],[1,0,1,1],[0,1,1,1]]
         four_rooms = [[1,1,1,1]]
 
+        one_room_allocations = []
+        for room_map in one_room:
+            this_room = []
+            for room in room_map:
+                for option in one_room_options:
+                    if room == 1:
+                        this_room.append(option)
+                    else:
+                        this_room.append(0)
+            one_room_allocations.append(this_room)
+        print(one_room_allocations)
+
+        two_room_allocations = []
+        for option in two_room_options: #[8,2]
+            for room_map in two_rooms:  #[1,0,1,0]
+
+
+
+            two_room_allocations.append(this_room)
+        print(two_room_allocations)
+
         return all_options
 
 

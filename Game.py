@@ -13,7 +13,7 @@ class Game:
         self.num_saboteurs = num_saboteurs
         self.gamelog = GameLog.HTMLGameLog(self.num_players, self.num_saboteurs)
         #TODO: calculate by formula
-        self.mission_points = [0, 1, 2, 3]
+        self.mission_points = [1, 2, 3]
 
         # Logging config
         self.detail_log = True
