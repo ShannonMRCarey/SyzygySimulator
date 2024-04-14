@@ -24,3 +24,39 @@ The Syzygy Game class maintains information about a single game's status, and ru
 
 ### SELECT A MISSION
 To select a mission, the game first randomly selects two different rooms from its possible options.
+Each player is asked which mission they would like to vote for. The Player method vote_for_mission will always return the mission with the highest score.
+
+### DEDUCT POINTS FOR MISSION
+Each mission will lose the team between 1 and 3 points.
+
+### DETERMINE ROOM ASSIGNMENTS
+To determine where players will go, the game first asks players to vote_for_assignments.
+In a real syzygy game, this voting mechanism would be replaced by informal discussion of where team members should go.
+To simulate this, each player submits votes to the game, which then selects the most-agreed-upon situation.
+
+in vote_for_assignment, each player considers each challenge room in order of importance (the one with the lowest point score).
+They will try to put the people they trust most, in order, into the rooms they care about most. To determine how many 
+players they want in each room, they select the arrangement which yields the highest expected score. For example, if 
+there are six players, and their normalized relationship matrix with them is [0.4,0.25, 0.2, 0.5, 0.5, 0.05],
+they weigh if putting the first two in a room together (0.4*0.24* 2 points earned) would be better than putting the first three 
+together (0.4*0.24*0.2* 3 points earned) and so on.
+
+Once the game has all votes in, it identifies which room each player received the most votes for, and assigns them. In
+the case that one player would be assigned alone to a room, the game will pick the second most popular choice for them,
+and so on.
+
+### SET UP CHALLENGES
+Set up challenges includes both the challenge check-in and the actual execution. check_in_for_challenge asks each player
+to evaluate the chances of success in their own room, which is based off the chances of there being a saboteur in their
+room statistically, and the trust they have of each other person in the room.
+
+Challenge execution is simulated here using each player's skill level in that challenge as a weight for the chances of
+them succeeding/failing. The Game sets a threshold for what constitutes overall success or failure.
+
+### UPDATE TRUST
+The score from each room for each round is used to help players determine who to flip on in the future, and who to
+trust. If a player was in a room which lost points, everyone else trusts them less, proportionate to how much they
+trusted them before and how many people were in the room that scored negatively. The inverse is true of a player
+in a room who gained points. The one additional consideration made is that when a player evaluates their own room,
+they remove themselves from the trust update (eg. if they and one other person were in a room that failed, since
+they know they're good, they entirely blame the other person for the failure).

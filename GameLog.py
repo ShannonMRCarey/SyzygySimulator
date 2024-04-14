@@ -114,7 +114,6 @@ class HTMLGameLog:
             self.log.write('<td>')
             self.log.write('<br>')
             self.log.write(f'Trust: {p.trust:.0%}<br>')
-            self.log.write(f'Intelligence: {p.intelligence:.0%}<br>')
             self.log.write('<br>')
             self.log.write(f'NAV: {p.nav_skill:.0%}<br>')
             self.log.write(f'ENG: {p.eng_skill:.0%}<br>')

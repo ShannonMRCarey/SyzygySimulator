@@ -1,7 +1,0 @@
-Ways we can tune the simulation:
-
-1. Number of rounds
-2. Threshold for challenge success
-3. Cost of mission
-4. Rooms impacted per mission
-5. Magnitude of trust updates

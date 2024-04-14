@@ -11,7 +11,6 @@ class Player:
         # random numbers between 0 and 1 to represent this player's skills and personality
         self.trust = round(random.random(), 2)
         self.trust_threshold = self.trust/2
-        self.intelligence = round(random.random(), 2)
         self.nav_skill = round(random.random(), 2)
         self.eng_skill = round(random.random(), 2)
         self.sci_skill = round(random.random(), 2)
@@ -30,18 +29,10 @@ class Player:
     '''player returns the mission they vote for. Takes in mission [string, string] and score
     {NAV:int score, ENG: int score, SCI: int score, DEF: int score}'''
     def vote_for_mission(self, mission, score):
-        # low intel players choose the mission they have more skill in
-        relevant_skills = [self.skill_map[challenge] for challenge in mission]
-        skill_based_choice = random.choices(mission, weights=relevant_skills, k=1)[0]
-
         # high intel players choose the mission with the highest score
-        relevant_scores = dict([(challenge,score[challenge]) for challenge in mission])
-        score_based_choice = max(relevant_scores)
-
-        # use intelligence as a weight for random choice between skill and score
-        choice = random.choices([skill_based_choice, score_based_choice],
-                                weights=[1-self.intelligence, self.intelligence],
-                                k=1)
+        relevant_scores = dict([(challenge, score[challenge]) for challenge in mission])
+        choice = max(relevant_scores, key=lambda challenge: relevant_scores[challenge])
+        print(choice)
         return choice
 
     '''player returns the assignment dict they vote for. Takes in selected_mission string and score
