@@ -1,11 +1,9 @@
-import copy
 import random
 from collections import Counter
 import Challenge
 import Player
 import GameLog
 import pandas as pd
-from statistics import mode
 
 class Game:
     def __init__(self, num_players, num_saboteurs):
@@ -61,7 +59,7 @@ class Game:
 
         # SELECT A MISSION
         mission = random.sample(self.challenge_names, k=2)
-        mission_votes = [player.vote_for_mission(mission, self.score)[0] for player in self.players]
+        mission_votes = [player.vote_for_mission(mission, self.score) for player in self.players]
         selected_mission = max(Counter(mission_votes))
         if self.detail_log: self.gamelog.log_mission(mission, selected_mission)
 

@@ -32,7 +32,6 @@ class Player:
         # high intel players choose the mission with the highest score
         relevant_scores = dict([(challenge, score[challenge]) for challenge in mission])
         choice = max(relevant_scores, key=lambda challenge: relevant_scores[challenge])
-        print(choice)
         return choice
 
     '''player returns the assignment dict they vote for. Takes in selected_mission string and score
