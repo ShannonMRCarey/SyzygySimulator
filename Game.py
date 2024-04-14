@@ -114,7 +114,7 @@ class Game:
             if self.detail_log: self.gamelog.log_challenges(challenge.name, participant_ids)
             if len(participants) > 0:
                 # Check in for Challenges
-                actions, sabotaged, flips = challenge.check_in_all_players(participants)
+                actions, sabotaged, flips = challenge.check_in_all_players(participants, round_num)
                 if self.detail_log: self.gamelog.log_actions(actions, challenge.name)
 
                 # Complete Challenges

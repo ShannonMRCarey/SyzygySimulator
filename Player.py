@@ -84,14 +84,17 @@ class Player:
             sorted_trust = sorted_trust[num_participants_for_best_outcome:]
         return assignments
 
-    def check_in_for_challenge(self, challenge_participants):
+    def check_in_for_challenge(self, challenge_participants, round_num):
         # true for a flip or sabotage, false for no flip or sabotage
         flip = False
         # if we knew nothing about anyone but ourselves, what's the chance that one of these people is the saboteur?
         random_chance = (len(challenge_participants) - 1) / (len(self.all_ids) - 1)
         if self.saboteur:
             # if we think the random chance is high, it means there's a good chance we get away with this
-            choice = random.choices([True, False], weights=[random_chance, 1-random_chance], k=1)
+            # however, we need to prioritize sabotaging over hiding our identity if the game is almost over
+            round_rate = round_num/5
+            sabotage_chance = random_chance + (1-random_chance)*round_rate
+            choice = random.choices([True, False], weights=[sabotage_chance, 1-sabotage_chance], k=1)
             return choice[0]
         else:
             if 1-random_chance < self.trust_threshold:

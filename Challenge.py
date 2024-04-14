@@ -13,12 +13,12 @@ class Challenge:
         self.flips = {}
 
     ''' Process whether each player flips or stays '''
-    def check_in_all_players(self, participants):
+    def check_in_all_players(self, participants, round_num):
         action = {}
         sabotaged = False
         flips = 0
         for player in participants:
-            action[player] = player.check_in_for_challenge(participants)
+            action[player] = player.check_in_for_challenge(participants, round_num)
             # if they choose to flip, record
             if action[player]:
                 if player.saboteur:
