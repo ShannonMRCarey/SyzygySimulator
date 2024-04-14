@@ -4,17 +4,20 @@ import Challenge
 import Player
 import GameLog
 import pandas as pd
+import math
 
 class Game:
-    def __init__(self, num_players, num_saboteurs):
+    def __init__(self, num_players, num_saboteurs, difficulty, logging):
         self.num_players = num_players
         self.num_saboteurs = num_saboteurs
         self.gamelog = GameLog.HTMLGameLog(self.num_players, self.num_saboteurs)
-        #TODO: calculate by formula
-        self.mission_points = [1, 2, 3]
+
+        max_mission = math.ceil(self.num_players/(5-difficulty))+1
+        min_mission = math.floor(max_mission/(5-difficulty))+1
+        self.mission_points = list(range(min_mission, max_mission))
 
         # Logging config
-        self.detail_log = True
+        self.detail_log = logging
 
         # Create the Challenges
         self.challenge_names = ["NAV", "ENG", "SCI", "DEF"]
@@ -51,7 +54,9 @@ class Game:
         self.round(5)
 
         # Log conclusion
-        self.gamelog.conclusion_log(self.score)
+        if self.detail_log: self.gamelog.conclusion_log(self.score)
+        if not self.detail_log:
+            self.analytics = self.return_analytics()
 
     def round(self, round_num):
         # LOGGING FOR TOP OF ROUND
@@ -138,6 +143,16 @@ class Game:
         relationships_df = pd.DataFrame(relationships, self.player_ids)
         if self.detail_log: self.gamelog.trust_update_log(relationships_df)
 
+    def return_analytics(self):
+        if min(list(self.score.values())) < 0:
+            win = False
+        else:
+            win = True
+        return self.score, win
 
 if __name__ == '__main__':
-    game = Game(6, 1)
+    n = 6
+    saboteurs = 1
+    difficulty = 2
+    logging = True
+    game = Game(n, saboteurs, difficulty, logging)
