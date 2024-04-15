@@ -11,6 +11,7 @@ class Game:
         self.num_players = num_players
         self.num_saboteurs = num_saboteurs
         self.gamelog = GameLog.HTMLGameLog(self.num_players, self.num_saboteurs)
+        self.room_cap = 4
 
         max_mission = math.ceil(self.num_players/(5-difficulty))+1
         min_mission = math.floor(max_mission/(5-difficulty))+1
@@ -75,7 +76,7 @@ class Game:
 
         # DETERMINE ROOM ASSIGNMENTS
         # where one vote is {"NAV": [ids], "ENG": [ids], "SCI": [ids], "DEF": [ids]}
-        room_votes = [player.vote_for_assignments(selected_mission, self.starting_score, self.score) for player in self.players]
+        room_votes = [player.vote_for_assignments(selected_mission, self.starting_score, self.score, self.room_cap) for player in self.players]
         assignments = {"NAV": [], "ENG": [], "SCI": [], "DEF": []}
         total_votes_by_id = {}
         for id in self.player_ids:
@@ -85,20 +86,25 @@ class Game:
                 if id in vote["ENG"]: total_votes["ENG"] = total_votes["ENG"] + 1
                 if id in vote["SCI"]: total_votes["SCI"] = total_votes["SCI"] + 1
                 if id in vote["DEF"]: total_votes["DEF"] = total_votes["DEF"] + 1
-            most_votes = max(total_votes, key=lambda challenge: total_votes[challenge])
-            assignments[most_votes].append(id)
+            sorted_votes = dict(sorted(total_votes.items(), key=lambda item: item[1], reverse=True))
+            print(f'sorted votes: {sorted_votes}')
+            for room, votes in sorted_votes.items():
+                if len(assignments[room]) < self.room_cap:
+                    assignments[room].append(id)
+                    break
             total_votes_by_id[id] = total_votes
 
-        while any([len(player_list)==1 for player_list in assignments.values()]):
+        while any([len(player_list) == 1 for player_list in assignments.values()]):
             for challenge, players in assignments.items():
                 if len(players) == 1:
-                    this_player = players[0]
+                    first_player = players[0]
                     # remove this challenge from this player's voted-into list
-                    total_votes_by_id[this_player].pop(challenge)
+                    total_votes_by_id[first_player].pop(challenge)
                     # reassign the player to the new max votes
-                    assignments[challenge].remove(this_player)
-                    most_votes = max(total_votes, key=lambda challenge: total_votes[challenge])
+                    assignments[challenge].remove(first_player)
+                    most_votes = max(total_votes_by_id[first_player], key=lambda key: total_votes_by_id[first_player][key])
                     assignments[most_votes].append(id)
+                    print(f'player {first_player} moved to {most_votes}')
 
         # SET UP CHALLENGES
         round_score = {}
@@ -152,7 +158,7 @@ class Game:
 
 if __name__ == '__main__':
     n = 8
-    saboteurs = 1
+    saboteurs = 2
     difficulty = 2
     logging = True
     game = Game(n, saboteurs, difficulty, logging)

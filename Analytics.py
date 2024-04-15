@@ -10,21 +10,23 @@ n = 500
 difficulty = 2
 
 # number of saboteurs
-saboteurs = 1
+saboteurs = [1, 2]
 
-for p in players:
-    # record the number of wins and average score
-    wins = 0
-    average_scores = []
-    # run n games with this many players
-    for g in range(n):
-        game = Game.Game(p, saboteurs, difficulty, False)
-        score, win = game.analytics
-        if win:
-            wins += 1
-        average_score = sum(score.values())/4
-        average_scores.append(average_score)
+for s in saboteurs:
+    for p in players:
+        # record the number of wins and average score
+        wins = 0
+        average_scores = []
+        # run n games with this many players
+        for g in range(n):
+            game = Game.Game(p, s, difficulty, False)
+            score, win = game.analytics
+            if win:
+                wins += 1
+            average_score = sum(score.values())/4
+            average_scores.append(average_score)
 
-    print(f'Players: {p}')
-    print(f'win percentage: {wins/n:.0%}')
-    print(f'average score: {sum(average_scores)/n}')
+        print(f'Players: {p}')
+        print(f'Saboteurs: {s}')
+        print(f'win percentage: {wins/n:.0%}')
+        print(f'average score: {sum(average_scores)/n}')

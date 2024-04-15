@@ -1,5 +1,6 @@
 Things to improve in the simulator:
     1) Make it clearer what the trust matrix means
+    2) Make it so an unsuccessful round has a different trust meaning than a clearly sabotaged round
 
 Ways we can tune the simulation:
 
@@ -11,3 +12,17 @@ Ways we can tune the simulation:
 
 Analytics we want from the simulation:
 1. Win/Loss rate
+
+Ways to improve the room:
+1. Implement room caps (to even out volatility in high-player games) (try 4)
+2. Adaptive mission scoring
+3. Hit the players harder, hit multiple missions
+4. Narrative mission style
+5. Round scaling (for mission scoring, difficulty)
+6. Aim to reduce the win percentage (60/40)
+7. Flip all the scores! Start broken, claw your way back up
+8. Flips are voted on *after* challenge completion
+note: room win/loss is public knowledge
+note: have to tap into a room by the end of the timer or you are randomly assigned
+note: cap discussion time, but allow people to leave early
+note: everyone votes themselves into their own room irl

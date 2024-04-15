@@ -37,7 +37,7 @@ class Player:
     '''player returns the assignment dict they vote for. Takes in selected_mission string and score
         {NAV:int score, ENG: int score, SCI: int score, DEF: int score}, returns {"NAV": [id], "ENG": [id],
          "SCI": [id], "DEF": [id]} '''
-    def vote_for_assignments(self, selected_mission, starting_score, score):
+    def vote_for_assignments(self, selected_mission, starting_score, score, room_cap):
         assignments = {"NAV": [], "ENG": [], "SCI": [], "DEF": []}
 
         # we predict out what the next score will be but subtracting the average mission penalty for selected mission
@@ -67,10 +67,9 @@ class Player:
             # find the number of participants who will give us the highest expected value
             num_participants_for_best_outcome = 0
             best_score = 0
-            for num_participants in range(2, len(self.all_ids)+1):
+            for num_participants in range(2, room_cap+1):
                 # 1 and n-1 are not valid numbers because you can't have one person alone in a room
                 if not num_participants == len(self.all_ids)-1:
-                    # TODO: add risk multiplier so we don't always pick 2
                     max_score = num_participants
                     # the chances that all of these people are good at once
                     trust_slice = [self.relationships[p] for p in sorted_trust[0:num_participants]]
